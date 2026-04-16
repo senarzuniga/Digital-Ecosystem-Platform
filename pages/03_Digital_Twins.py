@@ -113,7 +113,7 @@ def colour_twin(val):
     c = {"Synced": "#E8F5E9", "Diverged": "#FFF8E1", "Critical": "#FFEBEE"}
     return f"background-color: {c.get(val, 'white')};"
 
-styled = twin_df.style.applymap(colour_twin, subset=["Twin Status"])
+styled = twin_df.style.map(colour_twin, subset=["Twin Status"])
 st.dataframe(styled, use_container_width=True, height=320)
 
 # ── Divergence chart ───────────────────────────────────────────────────────────

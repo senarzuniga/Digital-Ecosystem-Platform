@@ -187,7 +187,7 @@ with tab2:
         c = {"Completed": "#E8F5E9", "In Progress": "#E3F2FD", "Scheduled": "#FFF8E1", "Pending": "#F3E5F5"}
         return f"background-color: {c.get(val, 'white')};"
 
-    styled_orders = filtered_orders.style.applymap(colour_order_status, subset=["Status"])
+    styled_orders = filtered_orders.style.map(colour_order_status, subset=["Status"])
     st.dataframe(styled_orders, use_container_width=True, height=300)
 
     col_l, col_r = st.columns(2)

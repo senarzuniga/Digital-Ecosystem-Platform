@@ -118,7 +118,7 @@ display_df = filtered[[
     "Temp (°C)", "Vibration (mm/s)", "Age (years)", "Next PM (days)", "Connected"
 ]].copy()
 
-styled = display_df.style.applymap(colour_status, subset=["Status"])
+styled = display_df.style.map(colour_status, subset=["Status"])
 st.dataframe(styled, use_container_width=True, height=320)
 
 # ── Telemetry drill-down ───────────────────────────────────────────────────────
