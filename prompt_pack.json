@@ -1,0 +1,185 @@
+{
+  "summary": "Deterministic prompt pack for a GitHub Copilot coding agent to build a new Streamlit Digital Ecosystem Platform app with UI parity to adaptive-sales-engine, AI agent taxonomy aligned with AI-FACTORY-v2, multi-company selection, and explicit industrial IIoT + AI-agent capabilities.",
+  "steps": [
+    "1. Input grounding: Confirm references and lock scope to (a) visual/UI concept from adaptive-sales-engine, (b) settings + AI agent taxonomy from AI-FACTORY-v2, and (c) new Streamlit app purpose: Digital Ecosystem Platform for machine manufacturers with multi-company workspace selection.",
+    "2. Requirement extraction: Convert the long-form brief into immutable requirement groups: baseline IIoT features, current limitations, AI-native target architecture, agent roles, autonomy progression, after-sales growth levers, and required literal constraints.",
+    "3. Build instruction prompt: Generate a single implementation instruction for Copilot Agent that includes project objective, architecture layers, functional modules, UX behavior, data and orchestration expectations, and non-functional constraints.",
+    "4. Enforce deterministic output contract: Require fixed section order, explicit acceptance criteria, no omitted constraints, and unambiguous implementation directives.",
+    "5. Add validation checks: Verify that output includes all mandatory blueprint blocks, maturity model mapping (L1-L5), after-sales monetization logic, and explicit phrases required by constraints.",
+    "6. Critique loop pass 1: Identify ambiguity, missing constraints, weak actionability, and non-testable language. Produce corrections.",
+    "7. Critique loop pass 2: Tighten wording for low-iteration execution, remove narrative drift, and ensure every module has measurable expected behavior.",
+    "8. Finalize reusable prompt: Emit final instruction prompt plus refinement history and a completion checklist so future tasks can reuse the same structure."
+  ],
+  "constraints": [
+    "Must accept a parameterized UI reference repository path (e.g., {UI_REPO_PATH})",
+    "Must accept a parameterized settings/taxonomy repository path (e.g., {TAXONOMY_REPO_PATH})",
+    "Must instruct creation of a new Streamlit application with the same visual and UI concept as adaptive-sales-engine",
+    "Must support working with many different companies by selecting the target company context",
+    "Must include the complete BEST Digital Ecosystem blueprint (Section 6 from brief)",
+    "Must include maturity model guidance (Section 8 from brief)",
+    "Must preserve and include the literal constraint fragment: 'Without it:'",
+    "Must preserve and include the literal constraint fragment: 'when upgrades are needed'",
+    "Must preserve and include the literal constraint fragment: '○ \"You will need this part in 3 weeks\"'",
+    "Must preserve and include the literal constraint fragment: 'You need:'",
+    "Must remain unambiguous, actionable, and deterministic for LLM execution",
+    "Must return strict JSON output with keys: summary, steps, constraints, output_schema, quality_gates, final_answer"
+  ],
+  "output_schema": {
+    "type": "object",
+    "required": [
+      "summary",
+      "steps",
+      "constraints",
+      "output_schema",
+      "quality_gates",
+      "final_answer"
+    ],
+    "properties": {
+      "summary": {
+        "type": "string",
+        "description": "One concise objective statement of the generated prompt pack."
+      },
+      "steps": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "description": "Numbered execution steps for the generation workflow."
+      },
+      "constraints": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "description": "Hard constraints that must be fully preserved."
+      },
+      "output_schema": {
+        "type": "object",
+        "description": "Schema contract for deterministic response structure."
+      },
+      "quality_gates": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "description": "Pass/fail checks before accepting final prompt output."
+      },
+      "final_answer": {
+        "type": "object",
+        "required": [
+          "copilot_instruction_prompt",
+          "critique_refinement_history",
+          "reuse_instructions"
+        ],
+        "properties": {
+          "copilot_instruction_prompt": {
+            "type": "string"
+          },
+          "critique_refinement_history": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "iteration",
+                "issues_found",
+                "improvements_applied"
+              ],
+              "properties": {
+                "iteration": {
+                  "type": "integer"
+                },
+                "issues_found": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "improvements_applied": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "reuse_instructions": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "copilot_instruction_prompt_sections": {
+            "type": "object",
+            "description": "Optional structured decomposition of the instruction prompt for easier maintenance and validation."
+          }
+        }
+      }
+    }
+  },
+  "quality_gates": [
+    "Gate 1: Output is valid JSON and parseable without modification.",
+    "Gate 2: Top-level keys exactly include summary, steps, constraints, output_schema, quality_gates, final_answer.",
+    "Gate 3: Steps are numbered and execution-ready with no ambiguous verbs.",
+    "Gate 4: All required constraints from the brief are explicitly present, including literal fragments.",
+    "Gate 5: Prompt includes Section 6 blueprint content and Section 8 maturity model mapping.",
+    "Gate 6: Prompt includes after-sales service growth keys (installed base visibility, predictive/prescriptive service, productized services, recurring revenue, upsell triggers, parts optimization, interface ownership, AI agents, value demonstration, lifecycle strategy, internal alignment).",
+    "Gate 7: Critique refinement history has at least 2 iterations and each includes issue + fix pairs.",
+    "Gate 8: Final instruction is directly executable by GitHub Copilot agent in a low-iteration workflow."
+  ],
+  "final_answer": {
+    "copilot_instruction_prompt": "You are GitHub Copilot Agent. Build a NEW Streamlit application for a Digital Ecosystem Platform for machine manufacturers. Use input parameters `ui_reference_repo_path` and `taxonomy_reference_repo_path` to locate source patterns supplied by the user/context (for example: /path/to/adaptive-sales-engine and /path/to/AI-FACTORY-v2).\n\nExecution requirements (deterministic):\n1) App framing and tenancy\n- Build multi-company workspace selection at entry (company picker).\n- Persist selected company as active context for all modules.\n- Show clear active-company indicator in UI header/sidebar.\n\n2) Baseline IIoT platform capabilities (market-proven)\n- Include modules for machine connectivity, real-time ingestion/analytics, predictive maintenance, remote monitoring/diagnostics, ERP/MES integration hooks, digital twin feedback loop, and API/app extensibility framing.\n\n3) Limitation-to-innovation framing\n- Represent transition from data-centric dashboards to action-centric intelligence workflows.\n- Encode flow shift: Today = Data -> Dashboard -> Human -> Decision -> Action; Future = Data -> AI Agents -> Decision -> Action (+ optional human approval).\n\n4) Target architecture implementation\n- Layer 1 (Physical/Data): machines, PLCs, sensors, edge, cloud ingestion connectors.\n- Layer 2 (Digital Core): streaming + data lake + digital twins (machine/process/plant/supply chain).\n- Layer 3 (AI Agent Layer): orchestration and specialized agents below.\n\n5) Mandatory AI agents\n- Operational Agent: anomaly detection + corrective action proposals/execution.\n- Optimization Agent: energy/material/throughput optimization with scenario simulation.\n- Maintenance Agent: failure prediction + intervention scheduling + spare-part ordering.\n- Commercial Agent: upsell/cross-sell prompts based on usage.\n- Engineering Agent: feed field performance into product/design improvement loop.\n- Management/CEO Agent: strategic synthesis, risk, investment recommendations.\n- Customer Success Agent: conversational advisory for plant performance improvement.\n\n6) BEST Digital Ecosystem blueprint (must be explicit)\n- Hyper-connectivity (OEM-agnostic + legacy compatibility).\n- Digital twin of machines/processes/plants/supply chain/customer usage.\n- AI Agent Orchestration Engine (priority/conflict resolution).\n- Autonomous execution layer (PLC/MES/ERP actions).\n- App + Agent Marketplace concept.\n- Continuous learning loop and anonymized cross-customer benchmarking.\n- Embedded commercial layer (spares ecommerce, subscriptions, performance-based pricing).\n- Human-AI interface (conversational + explainability).\n\n7) Maturity model support (L1-L5)\n- Implement maturity indicator and state descriptions: L1 Monitoring, L2 Analytics, L3 Predictive, L4 Semi-autonomous, L5 Fully autonomous AI ecosystem.\n- Provide progression recommendations to move customers from current level to next level.\n\n8) After-sales growth engine modules\n- Installed base visibility registry and segmentation.\n- Reactive -> Predictive -> Prescriptive service workflow.\n- Productized service catalog (outcome-based offers).\n- Recurring revenue tiers (Basic/Advanced/Premium).\n- Data-driven triggered upsell logic, including: when upgrades are needed and \"You will need this part in 3 weeks\".\n- Spare parts optimization and automated replenishment.\n- Remote diagnostics and support scalability.\n- Customer interface ownership mechanics.\n- AI revenue multiplier agents for opportunities, renewals, pricing, value proof.\n- Lifecycle monetization journey and internal alignment hooks.\n\n9) Critical constraints to keep verbatim in generated spec output\n- Include phrase: Without it:\n- Include phrase: when upgrades are needed\n- Include phrase: \"You will need this part in 3 weeks\"\n- Include phrase: You need:\n\n10) Output requirements\n- Return implementation plan with: architecture, UI map, data contracts, agent contracts, orchestration rules, acceptance criteria, and phased roadmap (MVP -> advanced).\n- Keep language action-oriented and testable. No vague narrative-only text.",
+    "critique_refinement_history": [
+      {
+        "iteration": 1,
+        "issues_found": [
+          "Original draft mixed strategy narrative and build instructions, reducing execution clarity.",
+          "Missing explicit requirement to preserve literal constraint fragments.",
+          "No deterministic output contract for Copilot response."
+        ],
+        "improvements_applied": [
+          "Rewrote as imperative build specification with numbered sections.",
+          "Added verbatim literal-fragment constraints block.",
+          "Added explicit output package requirements and acceptance-focused language."
+        ]
+      },
+      {
+        "iteration": 2,
+        "issues_found": [
+          "Architecture and agent taxonomy were present but after-sales monetization mechanics were incomplete.",
+          "Maturity model referenced but not operationalized.",
+          "Ambiguity remained around multi-company context persistence."
+        ],
+        "improvements_applied": [
+          "Expanded after-sales module list with concrete service and revenue mechanisms.",
+          "Added maturity level indicator with progression recommendations.",
+          "Added explicit tenant/company selection persistence and UI visibility requirements."
+        ]
+      }
+    ],
+    "reuse_instructions": [
+      "Reuse by replacing only reference repository paths and domain-specific agent types.",
+      "Parameterize repository paths through variables (e.g., ui_reference_repo_path, taxonomy_reference_repo_path) and use platform-neutral examples (e.g., /path/to/repo).",
+      "Keep top-level JSON keys and gate structure unchanged for deterministic automation.",
+      "Run quality gates in order; reject output if any gate fails.",
+      "For future variants, append critique iterations instead of rewriting prior history.",
+      "Preserve literal constraints exactly when provided by stakeholders."
+    ],
+    "copilot_instruction_prompt_sections": {
+      "app_framing": "Multi-company Streamlit app with active company context persisted and visible in UI.",
+      "baseline_capabilities": "IIoT connectivity, realtime analytics, predictive maintenance, remote diagnostics, ERP/MES hooks, digital twin loop, APIs.",
+      "architecture": "Three layers: Physical/Data, Digital Core, AI Agent Layer.",
+      "agents": "Operational, Optimization, Maintenance, Commercial, Engineering, Management/CEO, Customer Success.",
+      "blueprint": "Hyper-connectivity, digital twin everything, orchestration engine, autonomous execution, marketplace, learning loop, embedded commerce, conversational explainable interface.",
+      "maturity_model": "L1 Monitoring, L2 Analytics, L3 Predictive, L4 Semi-autonomous, L5 Fully autonomous.",
+      "growth_engine": "Installed base visibility, predictive/prescriptive service, productized outcomes, recurring tiers, triggered upsell, parts optimization, remote scalability, interface ownership, AI opportunity detection, lifecycle monetization, internal alignment.",
+      "verbatim_constraints": [
+        "Without it:",
+        "when upgrades are needed",
+        "You will need this part in 3 weeks",
+        "You need:"
+      ],
+      "output_requirements": "Return architecture, UI map, data contracts, agent contracts, orchestration rules, acceptance criteria, phased roadmap."
+    }
+  }
+}
