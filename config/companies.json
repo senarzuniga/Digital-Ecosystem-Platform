@@ -1,0 +1,67 @@
+[
+  {
+    "id": "alpha_mfg",
+    "name": "Alpha Manufacturing GmbH",
+    "country": "Germany",
+    "sector": "Automotive Parts",
+    "machines": 142,
+    "employees": 2400,
+    "maturity_level": 3,
+    "annual_revenue_m": 380,
+    "installed_base_age_avg_years": 6.2,
+    "active_contracts": 98,
+    "logo_color": "#1565C0"
+  },
+  {
+    "id": "beta_robotics",
+    "name": "Beta Robotics S.A.",
+    "country": "Spain",
+    "sector": "Industrial Robotics",
+    "machines": 67,
+    "employees": 820,
+    "maturity_level": 2,
+    "annual_revenue_m": 145,
+    "installed_base_age_avg_years": 4.1,
+    "active_contracts": 45,
+    "logo_color": "#2E7D32"
+  },
+  {
+    "id": "gamma_press",
+    "name": "Gamma Press Industries",
+    "country": "Italy",
+    "sector": "Metal Forming",
+    "machines": 210,
+    "employees": 3100,
+    "maturity_level": 1,
+    "annual_revenue_m": 520,
+    "installed_base_age_avg_years": 9.8,
+    "active_contracts": 130,
+    "logo_color": "#6A1B9A"
+  },
+  {
+    "id": "delta_textiles",
+    "name": "Delta Textiles Ltd.",
+    "country": "UK",
+    "sector": "Textile Machinery",
+    "machines": 88,
+    "employees": 1050,
+    "maturity_level": 4,
+    "annual_revenue_m": 210,
+    "installed_base_age_avg_years": 3.5,
+    "active_contracts": 72,
+    "logo_color": "#E65100"
+  },
+  {
+    "id": "epsilon_food",
+    "name": "Epsilon Food Processing",
+    "country": "Netherlands",
+    "sector": "Food & Beverage Machinery",
+    "machines": 53,
+    "employees": 640,
+    "maturity_level": 5,
+    "annual_revenue_m": 95,
+    "installed_base_age_avg_years": 2.1,
+    "active_contracts": 53,
+    "logo_color": "#00695C"
+  }
+]
