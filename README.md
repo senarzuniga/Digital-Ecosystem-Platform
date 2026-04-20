@@ -53,8 +53,21 @@ utils/
   data_generator.py             ← Mock IIoT / company data
   agent_taxonomy.py             ← AI agent definitions
 config/
-  companies.json                ← Sample company data (5 companies)
+  companies.json                ← Sample company data (6 companies)
 ```
+
+---
+
+## Onboarded Company: Digital Factory 1
+
+`config/companies.json` now includes **Digital Factory 1** (`id: digital_factory_1`) so it can be selected in the platform company selector and monitored across all modules.
+
+To monitor it as a real factory feed from your Factory Simulator repository:
+
+1. Enable connector ingestion (`MQTT_ENABLED=true` and broker settings in `.env`).
+2. Publish telemetry to the platform MQTT topic convention:
+   - `dep/machines/digital_factory_1/{asset_id}/telemetry`
+3. Start backend + frontend (or `docker compose --profile iot up`) and select **Digital Factory 1** in the sidebar.
 
 ---
 
