@@ -32,6 +32,8 @@ pip install -r requirements.txt
 streamlit run app.py
 ```
 
+Ensure that you have all the necessary dependencies installed, including `asyncio-mqtt`, which is required for certain asynchronous operations within the platform.
+
 ---
 
 ## Architecture
