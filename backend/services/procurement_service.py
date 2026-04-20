@@ -826,7 +826,8 @@ async def _update_supplier_score(
     issue_penalty = 0.0 if feedback.issue_flag else 1.0
     cycle_score = quality * 0.6 + issue_penalty * 0.4
 
-    new_rating = round(0.8 * supplier.rating_score + 0.2 * cycle_score, 4)
+    old_rating = supplier.rating_score
+    new_rating = round(0.8 * old_rating + 0.2 * cycle_score, 4)
     supplier.rating_score = new_rating
 
     if not feedback.issue_flag:
@@ -836,7 +837,7 @@ async def _update_supplier_score(
     await db.flush()
     logger.info(
         "Supplier %s rating updated: %.4f → %.4f",
-        supplier_id, supplier.rating_score, new_rating,
+        supplier_id, old_rating, new_rating,
     )
 
 
@@ -1029,8 +1030,11 @@ async def predict_upcoming_needs(
     for s in structured_list:
         key = (s.component or "unknown", s.req_type.value)
         counter[key] += 1
-        if key not in last_seen or (s.created_at and s.created_at > last_seen[key]):
-            last_seen[key] = s.created_at or datetime.now(tz=timezone.utc)
+        s_created = s.created_at
+        if s_created is not None and s_created.tzinfo is None:
+            s_created = s_created.replace(tzinfo=timezone.utc)
+        if s_created is not None and (key not in last_seen or s_created > last_seen[key]):
+            last_seen[key] = s_created
 
     predictions = []
     now = datetime.now(tz=timezone.utc)

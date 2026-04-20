@@ -767,15 +767,21 @@ async def test_api_metrics(client):
 
 @pytest.mark.asyncio
 async def test_api_marketplace(client):
-    # Create a marketplace supplier
-    await client.post(
+    # Create a global marketplace supplier (company_id=None → available to all)
+    create_resp = await client.post(
         "/api/v1/procurement/suppliers",
-        json={"name": "Open Market Co", "is_marketplace": True, "capabilities": ["SPARE_PART"]},
+        json={"name": "Open Market Co", "company_id": None, "is_marketplace": True, "capabilities": ["SPARE_PART"]},
         headers=AUTH_MANAGER,
     )
+    assert create_resp.status_code == 201
+    assert create_resp.json()["is_marketplace"] is True
+    assert create_resp.json()["company_id"] is None
+
     resp = await client.get("/api/v1/procurement/marketplace/suppliers", headers=AUTH_TECH)
     assert resp.status_code == 200
-    assert isinstance(resp.json(), list)
+    suppliers = resp.json()
+    assert isinstance(suppliers, list)
+    assert all(s["is_marketplace"] for s in suppliers)
 
 
 @pytest.mark.asyncio
