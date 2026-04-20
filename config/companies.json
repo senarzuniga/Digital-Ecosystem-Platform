@@ -63,5 +63,18 @@
     "installed_base_age_avg_years": 2.1,
     "active_contracts": 53,
     "logo_color": "#00695C"
+  },
+  {
+    "id": "digital_factory_1",
+    "name": "Digital Factory 1",
+    "country": "Spain",
+    "sector": "Corrugated Cardboard Manufacturing",
+    "machines": 96,
+    "employees": 680,
+    "maturity_level": 3,
+    "annual_revenue_m": 125,
+    "installed_base_age_avg_years": 4.8,
+    "active_contracts": 58,
+    "logo_color": "#00838F"
   }
 ]
