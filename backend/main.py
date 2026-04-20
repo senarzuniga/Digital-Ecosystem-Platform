@@ -20,7 +20,7 @@ from fastapi.responses import JSONResponse
 from backend.core.config import get_settings
 from backend.core.database import create_all_tables, AsyncSessionLocal
 from backend.core.events import get_event_bus
-from backend.routers import alerts, agents, auth, cmms, data, energy, finance, users, workflow
+from backend.routers import alerts, agents, auth, cmms, data, energy, finance, procurement, users, workflow
 from backend.services.agent_service import get_orchestrator
 from backend.services.user_service import ensure_default_admin
 
@@ -97,6 +97,7 @@ def create_app() -> FastAPI:
     app.include_router(finance.router,  prefix=api_prefix)
     app.include_router(energy.router,   prefix=api_prefix)
     app.include_router(workflow.router, prefix=api_prefix)
+    app.include_router(procurement.router, prefix=api_prefix)
 
     # ── Health check ──────────────────────────────────────────────────────────
     @app.get("/health", tags=["Health"], include_in_schema=True)

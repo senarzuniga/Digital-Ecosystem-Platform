@@ -126,3 +126,13 @@ class Topics:
     WORKFLOW_COMPENSATED      = "workflow.compensated"
     WORKFLOW_CANCELLED        = "workflow.cancelled"
     ACTION_EXECUTED           = "workflow.action.executed"
+    # ── Procurement / RFQ ────────────────────────────────────────────────────
+    PROCUREMENT_REQUEST_CREATED    = "procurement.request.created"
+    PROCUREMENT_REQUEST_STRUCTURED = "procurement.request.structured"
+    PROCUREMENT_REQUEST_ROUTED     = "procurement.request.routed"
+    PROCUREMENT_OFFER_RECEIVED     = "procurement.offer.received"
+    PROCUREMENT_DECISION_MADE      = "procurement.decision.made"
+    PROCUREMENT_ORDER_CREATED      = "procurement.order.created"
+    PROCUREMENT_ORDER_UPDATED      = "procurement.order.updated"
+    PROCUREMENT_FEEDBACK_SUBMITTED = "procurement.feedback.submitted"
+    PROCUREMENT_IOT_TRIGGERED      = "procurement.iot.triggered"
