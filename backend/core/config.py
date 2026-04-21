@@ -1,3 +1,4 @@
+
 """
 Application settings — loaded from environment variables / .env file.
 All values have safe defaults for local development.
@@ -7,6 +8,7 @@ from __future__ import annotations
 
 from functools import lru_cache
 from typing import List
+import os
 
 from pydantic import field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
@@ -30,7 +32,7 @@ class Settings(BaseSettings):
     DATABASE_URL: str = "sqlite+aiosqlite:///./dep_platform.db"
 
     # ── Security ───────────────────────────────────────────────────────────────
-    SECRET_KEY: str = "CHANGE-ME-IN-PRODUCTION-use-openssl-rand-hex-32"
+    SECRET_KEY: str = os.environ.get('JWT_SECRET_KEY', "CHANGE-ME-IN-PRODUCTION-use-openssl-rand-hex-32")
     ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60
     REFRESH_TOKEN_EXPIRE_DAYS: int = 7
