@@ -130,6 +130,7 @@ class Topics:
     PROCUREMENT_REQUEST_CREATED    = "procurement.request.created"
     PROCUREMENT_REQUEST_STRUCTURED = "procurement.request.structured"
     PROCUREMENT_REQUEST_ROUTED     = "procurement.request.routed"
+    PROCUREMENT_SUPPLIER_REQUEST_SENT = "procurement.supplier_request.sent"
     PROCUREMENT_OFFER_RECEIVED     = "procurement.offer.received"
     PROCUREMENT_DECISION_MADE      = "procurement.decision.made"
     PROCUREMENT_ORDER_CREATED      = "procurement.order.created"
