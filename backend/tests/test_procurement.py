@@ -37,6 +37,7 @@ from backend.models.procurement import (
     UrgencyLevel,
     OrderStatus,
 )
+from backend.core.events import Topics, get_event_bus
 from backend.services.procurement_agents import list_procurement_agents
 from backend.services import procurement_service
 from backend.tests.conftest import AUTH_ADMIN, AUTH_MANAGER, AUTH_TECH
@@ -198,6 +199,9 @@ async def test_routing_creates_plan(db):
 
     refreshed = await procurement_service.get_request(db, req.id)
     assert refreshed.status == RequestStatus.ROUTED
+
+    events = get_event_bus().get_history(topic=Topics.PROCUREMENT_SUPPLIER_REQUEST_SENT, limit=50)
+    assert any(e.payload.get("request_id") == req.id for e in events)
 
 
 # ════════════════════════════════════════════════════════════════════════════════

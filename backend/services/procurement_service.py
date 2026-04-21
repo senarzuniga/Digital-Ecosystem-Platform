@@ -406,6 +406,7 @@ async def route_request(
         UrgencyLevel.LOW: "168h",
     }
     sla_required = urgency_sla.get(structured.urgency_level, "72h")
+    bus = get_event_bus()
 
     for supplier in selected:
         sr = SupplierRequest(
@@ -418,11 +419,22 @@ async def route_request(
             sent_at=datetime.now(tz=timezone.utc),
         )
         db.add(sr)
+        await db.flush()
+        await bus.publish(
+            Topics.PROCUREMENT_SUPPLIER_REQUEST_SENT,
+            {
+                "request_id": request_id,
+                "supplier_request_id": sr.id,
+                "supplier_id": supplier.id,
+                "sla_required": sla_required,
+                "response_deadline": deadline.isoformat(),
+            },
+            source="procurement.supplier_interaction",
+        )
 
     req.status = RequestStatus.ROUTED
     await db.flush()
 
-    bus = get_event_bus()
     await bus.publish(
         Topics.PROCUREMENT_REQUEST_ROUTED,
         {

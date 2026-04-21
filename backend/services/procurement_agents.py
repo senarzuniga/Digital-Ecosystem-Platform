@@ -54,7 +54,7 @@ _PROCUREMENT_AGENTS: List[ProcurementModuleAgent] = [
         responsibility="Genera y envía SupplierRequest con SLA y deadline por proveedor.",
         input_contract="RoutingPlan + StructuredRequest",
         output_contract="SupplierRequest",
-        traceability_event="procurement.request.routed",
+        traceability_event="procurement.supplier_request.sent",
     ),
     ProcurementModuleAgent(
         id="offer_management_agent",
