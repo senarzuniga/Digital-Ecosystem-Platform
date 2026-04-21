@@ -63,9 +63,23 @@ from backend.models.procurement import (
     SupplierProfileCreate,
     SupplierProfileOut,
 )
+from backend.services.procurement_agents import ProcurementModuleAgent, list_procurement_agents
 from backend.services import procurement_service
 
 router = APIRouter(prefix="/procurement", tags=["Procurement / RFQ"])
+
+
+# ── Module Agent Catalog ─────────────────────────────────────────────────────────
+
+@router.get(
+    "/agents",
+    response_model=List[ProcurementModuleAgent],
+    summary="List the mandatory module agents in the procurement end-to-end flow",
+)
+async def get_procurement_agents(
+    _auth: dict = Depends(get_current_user_payload),
+):
+    return list_procurement_agents()
 
 
 # ── Request Capture ────────────────────────────────────────────────────────────

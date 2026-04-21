@@ -37,6 +37,7 @@ from backend.models.procurement import (
     UrgencyLevel,
     OrderStatus,
 )
+from backend.services.procurement_agents import list_procurement_agents
 from backend.services import procurement_service
 from backend.tests.conftest import AUTH_ADMIN, AUTH_MANAGER, AUTH_TECH
 
@@ -506,6 +507,18 @@ async def test_needs_prediction_returns_list(db):
 
 
 # ════════════════════════════════════════════════════════════════════════════════
+# Procurement Module Agents
+# ════════════════════════════════════════════════════════════════════════════════
+
+def test_procurement_module_agents_catalog():
+    agents = list_procurement_agents()
+    assert len(agents) == 8
+    assert agents[0].id == "request_capture_agent"
+    assert agents[-1].id == "feedback_learning_agent"
+    assert all(a.traceability_event.startswith("procurement.") for a in agents)
+
+
+# ════════════════════════════════════════════════════════════════════════════════
 # HTTP API Integration Tests
 # ════════════════════════════════════════════════════════════════════════════════
 
@@ -520,6 +533,16 @@ async def test_api_capture_request(client):
     body = resp.json()
     assert body["status"] == "captured"
     assert body["company_id"] == "APICO"
+
+
+@pytest.mark.asyncio
+async def test_api_list_procurement_agents(client):
+    resp = await client.get("/api/v1/procurement/agents", headers=AUTH_TECH)
+    assert resp.status_code == 200
+    body = resp.json()
+    assert isinstance(body, list)
+    assert len(body) == 8
+    assert body[0]["id"] == "request_capture_agent"
 
 
 @pytest.mark.asyncio
