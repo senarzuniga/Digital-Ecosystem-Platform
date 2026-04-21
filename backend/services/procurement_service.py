@@ -32,7 +32,6 @@ import json
 import logging
 from datetime import datetime, timedelta, timezone
 from typing import Any, Dict, List, Optional
-from uuid import uuid4
 
 from sqlalchemy import func, select, update
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -412,7 +411,6 @@ async def route_request(
 
     for supplier in selected:
         sr = SupplierRequest(
-            id=str(uuid4()),
             routing_plan_id=plan.id,
             request_id=request_id,
             supplier_id=supplier.id,
@@ -424,7 +422,6 @@ async def route_request(
         db.add(sr)
         sent_supplier_requests.append(
             {
-                "supplier_request_id": sr.id,
                 "supplier_id": supplier.id,
                 "sla_required": sla_required,
                 "response_deadline": deadline.isoformat(),
