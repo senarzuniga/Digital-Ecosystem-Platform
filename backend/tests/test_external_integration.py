@@ -95,7 +95,7 @@ async def test_external_integration_api(client):
         "/api/v1/external/ingest/api_factory_client",
         json={
             "events": [{"type": "vibration_alert", "severity": "high", "description": "Vibration above threshold"}],
-            "requests": [{"type": "SERVICE", "urgency": "high", "description": "Service intervention required"}],
+            "requests": [{"request_type": "SERVICE", "urgency": "high", "description": "Service intervention required"}],
         },
         headers=AUTH_ADMIN,
     )

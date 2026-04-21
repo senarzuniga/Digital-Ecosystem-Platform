@@ -52,7 +52,7 @@ def _safe_dt(value: object) -> datetime:
     return datetime.now(tz=timezone.utc)
 
 
-def _norm_severity(value: Optional[str]) -> str:
+def _norm_event_severity(value: Optional[str]) -> str:
     sev = (value or "info").lower()
     if sev in {"critical", "high", "warning", "info"}:
         return sev
@@ -73,6 +73,19 @@ def _severity_to_alert(value: str) -> AlertSeverity:
     if value == "warning":
         return AlertSeverity.WARNING
     return AlertSeverity.INFO
+
+
+def _norm_urgency(value: Optional[str]) -> str:
+    urgency = (value or "medium").lower()
+    if urgency in {"critical", "high", "medium", "low"}:
+        return urgency
+    if urgency in {"warning", "warn"}:
+        return "medium"
+    if urgency in {"info", "ok"}:
+        return "low"
+    if urgency in {"error", "fatal"}:
+        return "critical"
+    return "medium"
 
 
 async def ensure_default_factory_simulator_client(db: AsyncSession) -> ExternalClient:
@@ -123,7 +136,7 @@ async def list_clients(
 def normalize_event(client_id: str, raw: Dict) -> NormalizedEvent:
     event_type = str(raw.get("type") or raw.get("event_type") or raw.get("category") or "unknown")
     asset_id = raw.get("asset_id") or raw.get("machine_id") or raw.get("machine") or raw.get("line_id")
-    severity = _norm_severity(raw.get("severity") or raw.get("priority") or raw.get("level"))
+    severity = _norm_event_severity(raw.get("severity") or raw.get("priority") or raw.get("level"))
     description = str(raw.get("description") or raw.get("message") or raw.get("details") or event_type)
     ts = _safe_dt(raw.get("timestamp") or raw.get("time") or raw.get("created_at"))
     source_event_id = str(raw.get("id")) if raw.get("id") else None
@@ -143,7 +156,7 @@ def normalize_event(client_id: str, raw: Dict) -> NormalizedEvent:
 
 def normalize_request(client_id: str, raw: Dict) -> NormalizedRequest:
     req_type = str(raw.get("type") or raw.get("request_type") or raw.get("need_type") or "unknown")
-    urgency = _norm_severity(raw.get("urgency") or raw.get("priority") or raw.get("severity") or "medium")
+    urgency = _norm_urgency(raw.get("urgency") or raw.get("priority") or raw.get("severity") or "medium")
     status = str(raw.get("status") or "new")
     source_request_id = str(raw.get("id")) if raw.get("id") else None
     normalized_id = source_request_id or f"req-{uuid4()}"
