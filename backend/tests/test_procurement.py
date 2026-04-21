@@ -519,9 +519,9 @@ def test_procurement_module_agents_catalog():
     assert len(agents) == 8
     assert agents[0].id == "request_capture_agent"
     assert agents[-1].id == "feedback_learning_agent"
-    events = [a.traceability_event for a in agents]
-    assert len(set(events)) == len(events)
-    assert set(events) == {
+    traceability_events = [a.traceability_event for a in agents]
+    assert len(set(traceability_events)) == len(traceability_events)
+    assert set(traceability_events) == {
         "procurement.request.created",
         "procurement.request.structured",
         "procurement.request.routed",

@@ -406,7 +406,6 @@ async def route_request(
         UrgencyLevel.LOW: "168h",
     }
     sla_required = urgency_sla.get(structured.urgency_level, "72h")
-    bus = get_event_bus()
     sent_supplier_requests: List[Dict[str, Any]] = []
 
     for supplier in selected:
@@ -431,6 +430,7 @@ async def route_request(
     req.status = RequestStatus.ROUTED
     await db.flush()
 
+    bus = get_event_bus()
     await bus.publish(
         Topics.PROCUREMENT_SUPPLIER_REQUEST_SENT,
         {
