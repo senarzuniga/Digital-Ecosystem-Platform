@@ -54,6 +54,9 @@ class Settings(BaseSettings):
     OPCUA_ENDPOINT: str = "opc.tcp://localhost:4840"
     OPCUA_ENABLED: bool = False
 
+    # ── External simulated sources ─────────────────────────────────────────────
+    FACTORY_SIMULATOR_URL: str = "http://localhost:9100"
+
     # ── Logging ───────────────────────────────────────────────────────────────
     LOG_LEVEL: str = "INFO"
 

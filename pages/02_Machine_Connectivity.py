@@ -15,6 +15,12 @@ sys.path.insert(0, str(ROOT))
 
 from utils.styles import PLATFORM_CSS, MATURITY_LEVELS, render_company_header
 from utils.data_generator import generate_machines, generate_telemetry
+from utils.api_client import (
+    is_backend_healthy,
+    list_normalized_events,
+    list_normalized_requests,
+    poll_external_client,
+)
 
 st.set_page_config(page_title="Machine Connectivity · DEP", page_icon="🔌", layout="wide")
 st.markdown(PLATFORM_CSS, unsafe_allow_html=True)
@@ -68,6 +74,46 @@ st.markdown(
     unsafe_allow_html=True,
 )
 st.markdown(render_company_header(company), unsafe_allow_html=True)
+
+# ── External simulator live monitor ─────────────────────────────────────────────
+if company["id"] == "digital_factory_1":
+    st.markdown("<hr class='dep-divider'/>", unsafe_allow_html=True)
+    st.markdown('<div class="dep-section-header">Factory-Simulator · Live Monitoring</div>', unsafe_allow_html=True)
+
+    col_poll, col_status = st.columns([1, 2])
+    with col_poll:
+        if st.button("🔄 Poll external source now"):
+            if is_backend_healthy():
+                result = poll_external_client(company["id"])
+                if result:
+                    st.success(
+                        f"Ingested events={result.get('events_ingested', 0)} · "
+                        f"requests={result.get('requests_ingested', 0)}"
+                    )
+                else:
+                    st.warning("Polling request was sent but no response was returned.")
+            else:
+                st.warning("Backend is not reachable. Start FastAPI backend to enable live ingestion.")
+
+    with col_status:
+        st.info("Data is normalized in backend and integrated with Alerts, Workflows and Procurement.")
+
+    ext_events = list_normalized_events(company["id"], limit=25) or []
+    ext_requests = list_normalized_requests(company["id"], limit=25) or []
+
+    k1, k2, k3, k4 = st.columns(4)
+    k1.metric("Normalized Events", len(ext_events))
+    k2.metric("Critical/High Events", sum(1 for e in ext_events if e.get("severity") in ("critical", "high")))
+    k3.metric("Normalized Requests", len(ext_requests))
+    k4.metric("Active Requests", sum(1 for r in ext_requests if r.get("status") not in ("completed", "closed")))
+
+    c1, c2 = st.columns(2)
+    with c1:
+        st.markdown("**Latest External Events**")
+        st.dataframe(ext_events[:10], use_container_width=True, height=240)
+    with c2:
+        st.markdown("**Latest External Requests**")
+        st.dataframe(ext_requests[:10], use_container_width=True, height=240)
 
 # ── Data ───────────────────────────────────────────────────────────────────────
 machines_df = generate_machines(company)
