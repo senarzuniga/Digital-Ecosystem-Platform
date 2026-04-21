@@ -69,6 +69,27 @@ To monitor it as a real factory feed from your Factory Simulator repository:
    - `dep/machines/digital_factory_1/{asset_id}/telemetry`
 3. Start backend + frontend (or `docker compose --profile iot up`) and select **Digital Factory 1** in the sidebar.
 
+### External Factory-Simulator integration (new)
+
+The backend now includes:
+
+- **Client Registry** (`/api/v1/external/clients`) with `SIMULATED` / `REAL`
+- **Data Ingestion Service** (`/api/v1/external/poll/{client_id}`) for REST polling:
+  - `GET /factory/events`
+  - `GET /factory/requests`
+- **Normalization Layer** (tables `normalized_events` and `normalized_requests`)
+- **Core integration**:
+  - critical/high events create alerts + management workflows
+  - normalized requests are routed to procurement (`procurement.iot_trigger`) and start workflows
+
+Default bootstrapped external client:
+
+- `id`: `digital_factory_1`
+- `name`: `Factory-Simulator`
+- `type`: `SIMULATED`
+- `connection_type`: `REST`
+- `api_endpoint`: from `FACTORY_SIMULATOR_URL` (default `http://localhost:9100`)
+
 ---
 
 ## AI Agent Taxonomy

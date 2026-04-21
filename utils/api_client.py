@@ -175,3 +175,20 @@ def list_users(company_id: Optional[str] = None, token: Optional[str] = None) ->
 
 def get_me(token: str) -> Optional[dict]:
     return _get("/users/me", token=token)
+
+
+# ── External Integration ───────────────────────────────────────────────────────
+def list_external_clients(token: Optional[str] = None) -> Optional[List[dict]]:
+    return _get("/external/clients", token=token)
+
+
+def poll_external_client(client_id: str, token: Optional[str] = None) -> Optional[dict]:
+    return _post(f"/external/poll/{client_id}", json={}, token=token)
+
+
+def list_normalized_events(client_id: str, limit: int = 50, token: Optional[str] = None) -> Optional[List[dict]]:
+    return _get("/external/events", params={"client_id": client_id, "limit": limit}, token=token)
+
+
+def list_normalized_requests(client_id: str, limit: int = 50, token: Optional[str] = None) -> Optional[List[dict]]:
+    return _get("/external/requests", params={"client_id": client_id, "limit": limit}, token=token)

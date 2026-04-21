@@ -20,8 +20,9 @@ from fastapi.responses import JSONResponse
 from backend.core.config import get_settings
 from backend.core.database import create_all_tables, AsyncSessionLocal
 from backend.core.events import get_event_bus
-from backend.routers import alerts, agents, auth, cmms, data, energy, finance, procurement, users, workflow
+from backend.routers import alerts, agents, auth, cmms, data, energy, external_integration, finance, procurement, users, workflow
 from backend.services.agent_service import get_orchestrator
+from backend.services.external_integration_service import ensure_default_factory_simulator_client
 from backend.services.user_service import ensure_default_admin
 
 logging.basicConfig(
@@ -45,6 +46,7 @@ async def lifespan(app: FastAPI):
     # Bootstrap default admin
     async with AsyncSessionLocal() as db:
         await ensure_default_admin(db)
+        await ensure_default_factory_simulator_client(db)
         await db.commit()
 
     # Initialise agent orchestrator (registers all agents and event bus wiring)
@@ -98,6 +100,7 @@ def create_app() -> FastAPI:
     app.include_router(energy.router,   prefix=api_prefix)
     app.include_router(workflow.router, prefix=api_prefix)
     app.include_router(procurement.router, prefix=api_prefix)
+    app.include_router(external_integration.router, prefix=api_prefix)
 
     # ── Health check ──────────────────────────────────────────────────────────
     @app.get("/health", tags=["Health"], include_in_schema=True)
