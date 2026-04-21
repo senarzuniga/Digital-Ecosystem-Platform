@@ -32,6 +32,7 @@ import json
 import logging
 from datetime import datetime, timedelta, timezone
 from typing import Any, Dict, List, Optional
+from uuid import uuid4
 
 from sqlalchemy import func, select, update
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -407,9 +408,11 @@ async def route_request(
     }
     sla_required = urgency_sla.get(structured.urgency_level, "72h")
     bus = get_event_bus()
+    sent_supplier_requests: List[Dict[str, Any]] = []
 
     for supplier in selected:
         sr = SupplierRequest(
+            id=str(uuid4()),
             routing_plan_id=plan.id,
             request_id=request_id,
             supplier_id=supplier.id,
@@ -419,21 +422,26 @@ async def route_request(
             sent_at=datetime.now(tz=timezone.utc),
         )
         db.add(sr)
-        await db.flush()
-        await bus.publish(
-            Topics.PROCUREMENT_SUPPLIER_REQUEST_SENT,
+        sent_supplier_requests.append(
             {
-                "request_id": request_id,
                 "supplier_request_id": sr.id,
                 "supplier_id": supplier.id,
                 "sla_required": sla_required,
                 "response_deadline": deadline.isoformat(),
-            },
-            source="procurement.supplier_interaction",
+            }
         )
 
     req.status = RequestStatus.ROUTED
     await db.flush()
+
+    await bus.publish(
+        Topics.PROCUREMENT_SUPPLIER_REQUEST_SENT,
+        {
+            "request_id": request_id,
+            "supplier_requests": sent_supplier_requests,
+        },
+        source="procurement.supplier_interaction",
+    )
 
     await bus.publish(
         Topics.PROCUREMENT_REQUEST_ROUTED,
