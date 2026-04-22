@@ -1,3 +1,4 @@
+
 """
 Application settings — loaded from environment variables / .env file.
 All values have safe defaults for local development.
@@ -70,6 +71,9 @@ class Settings(BaseSettings):
         if isinstance(v, str):
             return [o.strip() for o in v.split(",") if o.strip()]
         return v
+
+    # Load SECRET_KEY from environment variable
+    SECRET_KEY: str = os.environ.get('SECRET_KEY', 'CHANGE-ME-IN-PRODUCTION-use-openssl-rand-hex-32')
 
 
 @lru_cache(maxsize=1)
