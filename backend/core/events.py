@@ -1,3 +1,4 @@
+
 """
 Event bus — publish/subscribe for domain events.
 
@@ -137,3 +138,4 @@ class Topics:
     PROCUREMENT_ORDER_UPDATED      = "procurement.order.updated"
     PROCUREMENT_FEEDBACK_SUBMITTED = "procurement.feedback.submitted"
     PROCUREMENT_IOT_TRIGGERED      = "procurement.iot.triggered"
+
