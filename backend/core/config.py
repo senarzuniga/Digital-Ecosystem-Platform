@@ -1,4 +1,5 @@
 
+
 """
 Application settings — loaded from environment variables / .env file.
 All values have safe defaults for local development.
@@ -32,7 +33,7 @@ class Settings(BaseSettings):
     DATABASE_URL: str = "sqlite+aiosqlite:///./dep_platform.db"
 
     # ── Security ───────────────────────────────────────────────────────────────
-    SECRET_KEY: str = os.environ.get('JWT_SECRET_KEY', "CHANGE-ME-IN-PRODUCTION-use-openssl-rand-hex-32")
+    SECRET_KEY: str = os.environ.get('SECRET_KEY', "CHANGE-ME-IN-PRODUCTION-use-openssl-rand-hex-32")
     ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60
     REFRESH_TOKEN_EXPIRE_DAYS: int = 7
@@ -72,9 +73,6 @@ class Settings(BaseSettings):
         if isinstance(v, str):
             return [o.strip() for o in v.split(",") if o.strip()]
         return v
-
-    # Load SECRET_KEY from environment variable
-    SECRET_KEY: str = os.environ.get('SECRET_KEY', 'CHANGE-ME-IN-PRODUCTION-use-openssl-rand-hex-32')
 
 
 @lru_cache(maxsize=1)
