@@ -33,7 +33,7 @@ class Settings(BaseSettings):
     DATABASE_URL: str = "sqlite+aiosqlite:///./dep_platform.db"
 
     # ── Security ───────────────────────────────────────────────────────────────
-    SECRET_KEY: str = os.environ.get('SECRET_KEY', "CHANGE-ME-IN-PRODUCTION-use-openssl-rand-hex-32")
+    SECRET_KEY: str = "CHANGE-ME-IN-PRODUCTION-use-openssl-rand-hex-32"
     ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60
     REFRESH_TOKEN_EXPIRE_DAYS: int = 7
