@@ -16,7 +16,9 @@ sys.path.insert(0, str(ROOT))
 from utils.styles import PLATFORM_CSS, MATURITY_LEVELS, render_company_header
 from utils.data_generator import generate_machines, generate_telemetry
 from utils.api_client import (
+    ensure_factory_simulator_client,
     is_backend_healthy,
+    list_external_clients,
     list_normalized_events,
     list_normalized_requests,
     poll_external_client,
@@ -74,32 +76,83 @@ st.markdown(
     unsafe_allow_html=True,
 )
 st.markdown(render_company_header(company), unsafe_allow_html=True)
+token = st.session_state.get("api_token")
 
 # ── External simulator live monitor ─────────────────────────────────────────────
 if company["id"] == "digital_factory_1":
     st.markdown("<hr class='dep-divider'/>", unsafe_allow_html=True)
     st.markdown('<div class="dep-section-header">Factory-Simulator · Live Monitoring</div>', unsafe_allow_html=True)
 
+    backend_live = is_backend_healthy()
+    simulator_clients = []
+    selected_client = None
+
+    if backend_live and token:
+        clients = list_external_clients(token=token) or []
+        simulator_clients = [
+            client for client in clients
+            if client.get("company_id") == company["id"]
+            or client.get("id") == company["id"]
+            or client.get("name") == "Factory-Simulator"
+        ]
+        if not simulator_clients:
+            bootstrapped_client = ensure_factory_simulator_client(token)
+            if bootstrapped_client:
+                simulator_clients = [bootstrapped_client]
+
+    client_id = company["id"]
+    if simulator_clients:
+        client_options = {
+            f"{client.get('name', client.get('id', 'External source'))} · {client.get('status', 'unknown')}": client
+            for client in simulator_clients
+        }
+        selected_label = st.selectbox(
+            "External source",
+            options=list(client_options.keys()),
+            key="factory_simulator_source",
+        )
+        selected_client = client_options[selected_label]
+        client_id = selected_client.get("id", company["id"])
+
     col_poll, col_status = st.columns([1, 2])
     with col_poll:
-        if st.button("🔄 Poll external source now"):
-            if is_backend_healthy():
-                result = poll_external_client(company["id"])
+        if st.button(
+            "🔄 Poll external source now",
+            disabled=not (backend_live and token and selected_client),
+        ):
+            if backend_live and token and selected_client:
+                result = poll_external_client(client_id, token=token)
                 if result:
                     st.success(
                         f"Ingested events={result.get('events_ingested', 0)} · "
                         f"requests={result.get('requests_ingested', 0)}"
                     )
                 else:
-                    st.warning("Polling request was sent but no response was returned.")
-            else:
-                st.warning("Backend is not reachable. Start FastAPI backend to enable live ingestion.")
+                    st.warning("Polling failed. Check the API login and simulator endpoint configuration.")
 
     with col_status:
-        st.info("Data is normalized in backend and integrated with Alerts, Workflows and Procurement.")
+        if not backend_live:
+            st.warning("Backend is not reachable. Start FastAPI backend to enable live ingestion.")
+        elif not token:
+            st.info("Live simulator access requires API login. Use the Users & Roles page to authenticate.")
+        elif not selected_client:
+            st.warning("Factory-Simulator client is not available in the backend registry.")
+        else:
+            st.success(
+                f"Connected to {selected_client.get('name', client_id)} via "
+                f"{selected_client.get('connection_type', 'REST')}"
+            )
+            st.caption(
+                f"Endpoint: {selected_client.get('api_endpoint', 'n/a')} · "
+                f"Status: {selected_client.get('status', 'unknown')}"
+            )
+            st.info("Data is normalized in backend and integrated with Alerts, Workflows and Procurement.")
 
-    ext_events = list_normalized_events(company["id"], limit=25) or []
-    ext_requests = list_normalized_requests(company["id"], limit=25) or []
+    ext_events = []
+    ext_requests = []
+    if backend_live and token and selected_client:
+        ext_events = list_normalized_events(client_id, limit=25, token=token) or []
+        ext_requests = list_normalized_requests(client_id, limit=25, token=token) or []
 
     k1, k2, k3, k4 = st.columns(4)
     k1.metric("Normalized Events", len(ext_events))

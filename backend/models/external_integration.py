@@ -10,8 +10,8 @@ from datetime import datetime, timezone
 from typing import Any, Dict, List, Optional
 from uuid import uuid4
 
-from pydantic import BaseModel, ConfigDict
-from sqlalchemy import DateTime, Enum, ForeignKey, String, Text
+from pydantic import BaseModel, ConfigDict, Field
+from sqlalchemy import DateTime, Enum, ForeignKey, Integer, String, Text
 from sqlalchemy.orm import Mapped, mapped_column
 
 from backend.core.database import Base
@@ -42,11 +42,29 @@ class ExternalClient(Base):
 
     id: Mapped[str] = mapped_column(String(64), primary_key=True)
     name: Mapped[str] = mapped_column(String(256), nullable=False)
+    company_id: Mapped[str] = mapped_column(String(64), nullable=False, index=True, default="digital_factory_1")
+    poll_interval_seconds: Mapped[int] = mapped_column(Integer, nullable=False, default=5)
     type: Mapped[ClientType] = mapped_column(Enum(ClientType), nullable=False)
     api_endpoint: Mapped[str] = mapped_column(String(512), nullable=False)
     connection_type: Mapped[ConnectionType] = mapped_column(Enum(ConnectionType), default=ConnectionType.REST)
     status: Mapped[ClientStatus] = mapped_column(Enum(ClientStatus), default=ClientStatus.ACTIVE, index=True)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=_utcnow)
+    updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=_utcnow, onupdate=_utcnow)
+
+
+class ExternalClientSyncState(Base):
+    __tablename__ = "external_client_sync_state"
+
+    client_id: Mapped[str] = mapped_column(
+        String(64),
+        ForeignKey("external_clients.id", ondelete="CASCADE"),
+        primary_key=True,
+    )
+    poll_interval_seconds: Mapped[int] = mapped_column(Integer, default=5)
+    last_polled_at: Mapped[Optional[datetime]] = mapped_column(DateTime(timezone=True))
+    last_seen_at: Mapped[Optional[datetime]] = mapped_column(DateTime(timezone=True))
+    last_error: Mapped[Optional[str]] = mapped_column(Text)
+    consecutive_failures: Mapped[int] = mapped_column(Integer, default=0)
     updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=_utcnow, onupdate=_utcnow)
 
 
@@ -88,10 +106,22 @@ class NormalizedRequest(Base):
 class ExternalClientCreate(BaseModel):
     id: str
     name: str
+    company_id: str = "digital_factory_1"
     type: ClientType
     api_endpoint: str
     connection_type: ConnectionType = ConnectionType.REST
     status: ClientStatus = ClientStatus.ACTIVE
+    poll_interval_seconds: int = 5
+
+
+class ExternalClientUpdate(BaseModel):
+    name: Optional[str] = None
+    company_id: Optional[str] = None
+    type: Optional[ClientType] = None
+    api_endpoint: Optional[str] = None
+    connection_type: Optional[ConnectionType] = None
+    status: Optional[ClientStatus] = None
+    poll_interval_seconds: Optional[int] = None
 
 
 class ExternalClientOut(BaseModel):
@@ -99,17 +129,23 @@ class ExternalClientOut(BaseModel):
 
     id: str
     name: str
+    company_id: str
     type: ClientType
     api_endpoint: str
     connection_type: ConnectionType
     status: ClientStatus
+    poll_interval_seconds: int = 5
+    last_polled_at: Optional[datetime] = None
+    last_seen_at: Optional[datetime] = None
+    last_error: Optional[str] = None
+    consecutive_failures: int = 0
     created_at: datetime
     updated_at: datetime
 
 
 class ExternalIngestionPayloadIn(BaseModel):
-    events: List[Dict[str, Any]] = []
-    requests: List[Dict[str, Any]] = []
+    events: List[Dict[str, Any]] = Field(default_factory=list)
+    requests: List[Dict[str, Any]] = Field(default_factory=list)
 
 
 class ExternalIngestionResult(BaseModel):
@@ -119,6 +155,18 @@ class ExternalIngestionResult(BaseModel):
     alerts_created: int
     workflows_started: int
     procurement_requests_created: int
+
+
+class ExternalIngestionStatusOut(BaseModel):
+    running: bool
+    started_at: Optional[datetime]
+    last_poll_at: Optional[datetime]
+    active_clients: int
+    successful_polls: int
+    failed_polls: int
+    total_events_ingested: int
+    total_requests_ingested: int
+    clients: List[ExternalClientOut] = Field(default_factory=list)
 
 
 class NormalizedEventOut(BaseModel):

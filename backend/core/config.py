@@ -58,6 +58,7 @@ class Settings(BaseSettings):
 
     # ── External simulated sources ─────────────────────────────────────────────
     FACTORY_SIMULATOR_URL: str = "http://localhost:9100"
+    EXTERNAL_POLL_INTERVAL_SECONDS: int = 5
 
     # ── Logging ───────────────────────────────────────────────────────────────
     LOG_LEVEL: str = "INFO"

@@ -137,3 +137,6 @@ class Topics:
     PROCUREMENT_ORDER_UPDATED      = "procurement.order.updated"
     PROCUREMENT_FEEDBACK_SUBMITTED = "procurement.feedback.submitted"
     PROCUREMENT_IOT_TRIGGERED      = "procurement.iot.triggered"
+    EXTERNAL_EVENT_NORMALIZED      = "external.event.normalized"
+    EXTERNAL_REQUEST_NORMALIZED    = "external.request.normalized"
+    PROCUREMENT_REQUEST_DISPATCHED = "procurement.request.dispatched"

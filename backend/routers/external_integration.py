@@ -17,6 +17,8 @@ from backend.models.external_integration import (
     ExternalClientOut,
     ExternalIngestionPayloadIn,
     ExternalIngestionResult,
+    ExternalIngestionStatusOut,
+    ExternalClientUpdate,
     NormalizedEventOut,
     NormalizedRequestOut,
 )
@@ -32,7 +34,18 @@ async def create_client(
     db: AsyncSession = Depends(get_db),
 ):
     client = await external_integration_service.create_client(db, data)
-    return ExternalClientOut.model_validate(client)
+    client_out = await external_integration_service.get_client_out(db, client.id)
+    return client_out
+
+
+@router.post("/clients/factory-simulator", response_model=ExternalClientOut)
+async def ensure_factory_simulator_client(
+    _auth: dict = Depends(get_current_user_payload),
+    db: AsyncSession = Depends(get_db),
+):
+    client = await external_integration_service.ensure_default_factory_simulator_client(db)
+    client_out = await external_integration_service.get_client_out(db, client.id)
+    return client_out
 
 
 @router.get("/clients", response_model=List[ExternalClientOut])
@@ -41,8 +54,43 @@ async def list_clients(
     _auth: dict = Depends(get_current_user_payload),
     db: AsyncSession = Depends(get_db),
 ):
-    clients = await external_integration_service.list_clients(db, status=status)
-    return [ExternalClientOut.model_validate(c) for c in clients]
+    return await external_integration_service.list_clients_out(db, status=status)
+
+
+@router.patch("/clients/{client_id}", response_model=ExternalClientOut)
+async def update_client(
+    client_id: str,
+    data: ExternalClientUpdate,
+    _auth: dict = Depends(get_current_user_payload),
+    db: AsyncSession = Depends(get_db),
+):
+    client = await external_integration_service.update_client(db, client_id, data)
+    if client is None:
+        raise HTTPException(status_code=404, detail=f"External client '{client_id}' not found")
+    client_out = await external_integration_service.get_client_out(db, client.id)
+    return client_out
+
+
+@router.get("/status", response_model=ExternalIngestionStatusOut)
+async def external_ingestion_status(
+    _auth: dict = Depends(get_current_user_payload),
+):
+    ingestion = external_integration_service.get_external_ingestion_service()
+    return await ingestion.get_status()
+
+
+@router.post("/poll-now", response_model=List[ExternalIngestionResult])
+async def poll_now(
+    client_id: Optional[str] = Query(None),
+    _auth: dict = Depends(get_current_user_payload),
+    db: AsyncSession = Depends(get_db),
+):
+    if client_id:
+        client = await external_integration_service.get_client(db, client_id)
+        if client is None:
+            raise HTTPException(status_code=404, detail=f"External client '{client_id}' not found")
+    ingestion = external_integration_service.get_external_ingestion_service()
+    return await ingestion.poll_now(client_id=client_id)
 
 
 @router.post("/ingest/{client_id}", response_model=ExternalIngestionResult)
@@ -66,7 +114,18 @@ async def poll_simulator(
     db: AsyncSession = Depends(get_db),
 ):
     try:
-        result = await external_integration_service.poll_factory_simulator(db, client_id)
+        client = await external_integration_service.get_client(db, client_id)
+        if client is None:
+            raise HTTPException(status_code=404, detail=f"External client '{client_id}' not found")
+        results = await external_integration_service.get_external_ingestion_service().poll_now(client_id=client_id)
+        result = results[0] if results else ExternalIngestionResult(
+            client_id=client_id,
+            events_ingested=0,
+            requests_ingested=0,
+            alerts_created=0,
+            workflows_started=0,
+            procurement_requests_created=0,
+        )
     except ValueError as exc:
         raise HTTPException(status_code=400, detail=str(exc)) from exc
     except Exception as exc:

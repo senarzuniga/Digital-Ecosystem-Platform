@@ -36,6 +36,7 @@ class WorkflowTriggerType(str, enum.Enum):
     SCHEDULE = "schedule"
     MANUAL   = "manual"
     AGENT    = "agent"
+    EXTERNAL_REQUEST = "external_request"
 
 
 class WorkflowState(str, enum.Enum):

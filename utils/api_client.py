@@ -182,6 +182,10 @@ def list_external_clients(token: Optional[str] = None) -> Optional[List[dict]]:
     return _get("/external/clients", token=token)
 
 
+def ensure_factory_simulator_client(token: str) -> Optional[dict]:
+    return _post("/external/clients/factory-simulator", json={}, token=token)
+
+
 def poll_external_client(client_id: str, token: Optional[str] = None) -> Optional[dict]:
     return _post(f"/external/poll/{client_id}", json={}, token=token)
 

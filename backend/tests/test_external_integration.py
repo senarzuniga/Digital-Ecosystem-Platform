@@ -6,9 +6,13 @@ from __future__ import annotations
 
 import pytest
 
+from backend.core.config import get_settings
 from backend.models.external_integration import ClientType, ExternalClientCreate, ExternalIngestionPayloadIn
 from backend.services import alert_service, external_integration_service, procurement_service, workflow_service
-from backend.tests.conftest import AUTH_ADMIN
+from backend.tests.conftest import AUTH_ADMIN, TestSession
+
+
+settings = get_settings()
 
 
 @pytest.mark.asyncio
@@ -16,6 +20,7 @@ async def test_ensure_default_factory_client(db):
     client = await external_integration_service.ensure_default_factory_simulator_client(db)
     assert client.id == "digital_factory_1"
     assert client.type == ClientType.SIMULATED
+    assert client.api_endpoint == settings.FACTORY_SIMULATOR_URL
 
     listed = await external_integration_service.list_clients(db)
     assert any(c.id == "digital_factory_1" for c in listed)
@@ -29,7 +34,7 @@ async def test_ingest_payload_normalizes_and_integrates(db):
             id="ext_factory_test",
             name="External Factory Test",
             type=ClientType.SIMULATED,
-            api_endpoint="http://localhost:9100",
+            api_endpoint="http://localhost:9000",
         ),
     )
 
@@ -83,7 +88,7 @@ async def test_external_integration_api(client):
             "id": "api_factory_client",
             "name": "API Factory Client",
             "type": "SIMULATED",
-            "api_endpoint": "http://localhost:9100",
+            "api_endpoint": "http://localhost:9000",
             "connection_type": "REST",
             "status": "active",
         },
@@ -110,3 +115,47 @@ async def test_external_integration_api(client):
     assert requests_res.status_code == 200
     assert len(events_res.json()) >= 1
     assert len(requests_res.json()) >= 1
+
+    status_res = await client.get("/api/v1/external/status", headers=AUTH_ADMIN)
+    assert status_res.status_code == 200
+    assert "clients" in status_res.json()
+
+
+@pytest.mark.asyncio
+async def test_poll_now_updates_runtime_status(db, monkeypatch):
+    await external_integration_service.ensure_default_factory_simulator_client(db)
+    await db.commit()
+
+    async def fake_get(self, path: str, params=None):
+        if path == "/factory/events":
+            return [{
+                "id": "poll-event-001",
+                "type": "temperature_spike",
+                "machine_id": "MCH-EXT-1",
+                "severity": "high",
+                "description": "External temperature exceeded threshold",
+                "timestamp": "2026-04-23T08:00:00Z",
+            }]
+        if path == "/factory/requests":
+            return [{
+                "id": "poll-request-001",
+                "request_type": "SPARE_PART",
+                "machine_id": "MCH-EXT-1",
+                "urgency": "critical",
+                "description": "Replacement part required",
+            }]
+        return []
+
+    monkeypatch.setattr(external_integration_service.RestConnector, "get", fake_get)
+    monkeypatch.setattr(external_integration_service, "AsyncSessionLocal", TestSession)
+
+    ingestion = external_integration_service.get_external_ingestion_service()
+    results = await ingestion.poll_now(client_id="digital_factory_1")
+
+    assert len(results) == 1
+    assert results[0].events_ingested == 1
+    assert results[0].requests_ingested == 1
+
+    status = await ingestion.get_status()
+    assert status.successful_polls >= 1
+    assert any(client.id == "digital_factory_1" and client.last_polled_at is not None for client in status.clients)

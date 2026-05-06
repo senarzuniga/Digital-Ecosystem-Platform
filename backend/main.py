@@ -22,7 +22,7 @@ from backend.core.database import create_all_tables, AsyncSessionLocal
 from backend.core.events import get_event_bus
 from backend.routers import alerts, agents, auth, cmms, data, energy, external_integration, finance, procurement, users, workflow
 from backend.services.agent_service import get_orchestrator
-from backend.services.external_integration_service import ensure_default_factory_simulator_client
+from backend.services.external_integration_service import ensure_default_factory_simulator_client, get_external_ingestion_service
 from backend.services.user_service import ensure_default_admin
 
 logging.basicConfig(
@@ -49,6 +49,9 @@ async def lifespan(app: FastAPI):
         await ensure_default_factory_simulator_client(db)
         await db.commit()
 
+    ingestion = get_external_ingestion_service()
+    await ingestion.start()
+
     # Initialise agent orchestrator (registers all agents and event bus wiring)
     get_orchestrator()
     logger.info("Agent orchestrator initialised")
@@ -61,6 +64,7 @@ async def lifespan(app: FastAPI):
     yield
 
     # ── Shutdown ───────────────────────────────────────────────────────────────
+    await ingestion.stop()
     logger.info("Shutting down %s", settings.APP_NAME)
 
 
