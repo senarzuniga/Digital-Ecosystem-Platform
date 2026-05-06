@@ -15,6 +15,15 @@ from pydantic import field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
+def read_secret(secret_name: str, default: str = "") -> str:
+    secret_path = f"/run/secrets/{secret_name}"
+    try:
+        with open(secret_path, "r") as secret_file:
+            return secret_file.read().strip()
+    except FileNotFoundError:
+        return default
+
+
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(
         env_file=".env",
@@ -33,7 +42,7 @@ class Settings(BaseSettings):
     DATABASE_URL: str = "sqlite+aiosqlite:///./dep_platform.db"
 
     # ── Security ───────────────────────────────────────────────────────────────
-    SECRET_KEY: str = "CHANGE-ME-IN-PRODUCTION-use-openssl-rand-hex-32"
+    SECRET_KEY: str = read_secret("secret_key", "CHANGE-ME-IN-PRODUCTION-use-openssl-rand-hex-32")
     ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60
     REFRESH_TOKEN_EXPIRE_DAYS: int = 7
