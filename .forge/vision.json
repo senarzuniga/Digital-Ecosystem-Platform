@@ -1,0 +1,26 @@
+{
+  "vision": {
+    "title": "",
+    "mission": "",
+    "core_purpose": "",
+    "key_architecture": "",
+    "long_term_vision": {
+      "strategic_goals": {
+        "short_term": "",
+        "medium_term": "",
+        "long_term": ""
+      }
+    },
+    "key_principles": [
+      {"priority": 1, "text": ""}
+    ],
+    "market_strategy": {
+      "competitive_advantages": [
+        {"priority": 1, "text": ""}
+      ],
+      "differentiation_from_competitors": [
+        {"priority": 1, "text": ""}
+      ]
+    }
+  }
+}

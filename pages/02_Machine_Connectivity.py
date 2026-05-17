@@ -35,9 +35,9 @@ COMPANY_MAP = {c["name"]: c for c in COMPANIES}
 
 with st.sidebar:
     st.markdown(
-        "<div style='font-size:16px;font-weight:700;color:#E0E8F0;padding:12px 0 4px;'>"
-        "🏭 Digital Ecosystem</div>"
-        "<hr style='border-color:#263C55;margin:4px 0 12px;'/>",
+        "<div style='font-size:16px;font-weight:700;color:#FF6A00;padding:12px 0 4px;'>"
+        "🏭 INGECART</div>"
+        "<hr style='border-color:#FF6A00;margin:4px 0 12px;'/>",
         unsafe_allow_html=True,
     )
     st.markdown("**🏢 Active Company**")
@@ -59,7 +59,7 @@ with st.sidebar:
         f"{mat['label']}</span>",
         unsafe_allow_html=True,
     )
-    st.markdown("<hr style='border-color:#263C55;margin:12px 0;'/>", unsafe_allow_html=True)
+    st.markdown("<hr style='border-color:#FF6A0044;margin:12px 0;'/>", unsafe_allow_html=True)
     st.page_link("app.py",                           label="🏠  Overview")
     st.page_link("pages/01_Dashboard.py",            label="📊  Dashboard")
     st.page_link("pages/02_Machine_Connectivity.py", label="🔌  Connectivity")
@@ -235,7 +235,7 @@ if machine_ids:
         fig = go.Figure()
         fig.add_trace(go.Scatter(
             x=tel_df["Timestamp"], y=tel_df["Temperature (°C)"],
-            line=dict(color="#1565C0", width=2), name="Temp (°C)",
+            line=dict(color="#FF6A00", width=2), name="Temp (°C)",
         ))
         fig.add_hline(y=80, line_dash="dash", line_color="#EF5350",
                       annotation_text="Critical threshold")
@@ -276,7 +276,7 @@ st.markdown("<hr class='dep-divider'/>", unsafe_allow_html=True)
 st.markdown('<div class="dep-section-header">IIoT Architecture Layers</div>', unsafe_allow_html=True)
 
 layers = [
-    ("Layer 1 · Physical / Data",    "#1565C0",
+    ("Layer 1 · Physical / Data",    "#FF6A00",
      "Machines, PLCs, sensors, edge gateways, SCADA, on-premise historians → "
      "OEE-agnostic data ingestion with OPC-UA / MQTT / REST adapters."),
     ("Layer 2 · Digital Core",       "#2E7D32",
@@ -290,11 +290,10 @@ layers = [
 for title, color, desc in layers:
     st.markdown(
         f"""
-        <div style='border-left:4px solid {color};background:white;border-radius:6px;
-                    padding:12px 16px;margin-bottom:10px;border:1px solid #E2EAF3;
-                    border-left:4px solid {color};'>
-          <div style='font-size:14px;font-weight:600;color:{color};margin-bottom:4px;'>{title}</div>
-          <div style='font-size:13px;color:#4A5568;'>{desc}</div>
+                <div style='border-left:4px solid {color};background:#F4F5F7;border-radius:6px;
+                                        padding:12px 16px;margin-bottom:10px;border:1px solid #E2EAF3;'>
+                    <div style='font-size:14px;font-weight:700;color:#1A1D24;margin-bottom:4px;'>{title}</div>
+                    <div style='font-size:13px;color:#7E848E;'>{desc}</div>
         </div>
         """,
         unsafe_allow_html=True,

@@ -40,21 +40,20 @@ COMPANY_MAP = {c["name"]: c for c in COMPANIES}
 with st.sidebar:
     st.markdown(
         """
-        <div style='text-align:center;padding:16px 0 8px;'>
-          <div style='font-size:28px;'>🏭</div>
-          <div style='font-size:16px;font-weight:700;color:#E0E8F0;letter-spacing:0.5px;'>
-            Digital Ecosystem
+        <div style='text-align:center;padding:20px 0 12px;border-bottom:2px solid #FF6A00;margin-bottom:16px;'>
+          <div style='font-size:32px;margin-bottom:4px;'>🏭</div>
+          <div style='font-size:17px;font-weight:700;color:#FF6A00;letter-spacing:-0.5px;font-family:"Montserrat", sans-serif;'>
+            INGECART
           </div>
-          <div style='font-size:11px;color:#6B8EB0;font-weight:500;'>
-            Platform for Machine Manufacturers
+          <div style='font-size:12px;color:#7E848E;font-weight:500;margin-top:4px;'>
+            Industrial Intelligence Platform
           </div>
         </div>
-        <hr style='border-color:#263C55;margin:8px 0 16px;'/>
         """,
         unsafe_allow_html=True,
     )
 
-    st.markdown("**🏢 Active Company**")
+    st.markdown("**🏢 ACTIVE COMPANY**")
     selected_name = st.selectbox(
         "Select company to work with",
         options=[c["name"] for c in COMPANIES],
@@ -69,12 +68,12 @@ with st.sidebar:
     mat = MATURITY_LEVELS[company["maturity_level"]]
     st.markdown(
         f"""
-        <div style='background:#1B2B40;border-radius:8px;padding:10px 12px;margin-top:8px;'>
-          <div style='font-size:11px;color:#6B8EB0;font-weight:600;text-transform:uppercase;
-                      letter-spacing:0.5px;'>Maturity Level</div>
-          <div style='margin-top:4px;'>
+        <div style='background:#1A1D24;border:1px solid #FF6A0055;border-left:3px solid #FF6A00;padding:12px;margin-top:12px;'>
+          <div style='font-size:11px;color:#7E848E;font-weight:600;text-transform:uppercase;
+                      letter-spacing:0.8px;'>Maturity Level</div>
+          <div style='margin-top:6px;'>
             <span class='maturity-pill' style='background:{mat["bg"]};color:{mat["color"]};
-                  font-size:12px;padding:3px 10px;'>
+                  font-size:12px;padding:6px 10px;border-left:3px solid {mat["color"]};'>
               {mat["label"]}
             </span>
           </div>
@@ -83,11 +82,11 @@ with st.sidebar:
         unsafe_allow_html=True,
     )
 
-    st.markdown("<hr style='border-color:#263C55;margin:16px 0;'/>", unsafe_allow_html=True)
+    st.markdown("<div style='border-top:1px solid #FF6A0044;margin:20px 0;'></div>", unsafe_allow_html=True)
     st.markdown(
         """
-        <div style='font-size:11px;color:#6B8EB0;font-weight:600;text-transform:uppercase;
-                    letter-spacing:0.5px;margin-bottom:8px;'>Navigation</div>
+        <div style='font-size:11px;color:#7E848E;font-weight:600;text-transform:uppercase;
+                    letter-spacing:0.8px;margin-bottom:12px;'>Navigation</div>
         """,
         unsafe_allow_html=True,
     )
@@ -100,19 +99,18 @@ with st.sidebar:
     st.page_link("pages/06_Ecosystem_Blueprint.py", label="🗺️  Ecosystem Blueprint")
     st.page_link("pages/07_After_Sales_Engine.py",  label="💰  After-Sales Engine")
 
-    st.markdown("<hr style='border-color:#263C55;margin:16px 0;'/>", unsafe_allow_html=True)
+    st.markdown("<div style='border-top:1px solid #FF6A0044;margin:20px 0;'></div>", unsafe_allow_html=True)
     st.markdown(
-        "<div style='font-size:11px;color:#45627E;text-align:center;'>"
-        "© 2026 Digital Ecosystem Platform</div>",
+        "<div style='font-size:11px;color:#7E848E;text-align:center;'>"
+        "© 2026 INGECART · Industrial Intelligence</div>",
         unsafe_allow_html=True,
     )
 
 # ── Main content ───────────────────────────────────────────────────────────────
 st.markdown(
-    '<div class="dep-page-title">🏭 Digital Ecosystem Platform</div>'
+    '<div class="dep-page-title">INDUSTRIAL INTELLIGENCE PLATFORM</div>'
     '<div class="dep-page-subtitle">'
-    'AI-powered IIoT platform for machine manufacturers · '
-    'Select a company in the sidebar to begin'
+    'AI-powered automation & optimization for machine manufacturers'
     '</div>',
     unsafe_allow_html=True,
 )
@@ -154,12 +152,17 @@ for idx, (icon, title, desc) in enumerate(modules):
     with cols[idx % 3]:
         st.markdown(
             f"""
-            <div style='background:white;border:1px solid #E2EAF3;border-radius:12px;
-                        padding:18px;margin-bottom:14px;box-shadow:0 1px 4px rgba(0,0,0,0.05);
-                        min-height:110px;'>
-              <div style='font-size:26px;margin-bottom:6px;'>{icon}</div>
-              <div style='font-size:15px;font-weight:600;color:#1A2E44;margin-bottom:4px;'>{title}</div>
-              <div style='font-size:13px;color:#6B7C93;'>{desc}</div>
+            <div style='background:#1A1D24;
+                        border: 1px solid #FF6A0044;
+                        border-left: 3px solid #FF6A00;
+                        border-radius: 2px;
+                        padding: 18px;
+                        margin-bottom: 14px;
+                        box-shadow: 0 0 15px rgba(255, 106, 0, 0.05);
+                        min-height: 110px;'>
+              <div style='font-size: 26px; margin-bottom: 6px;'>{icon}</div>
+              <div style='font-size: 15px; font-weight: 600; color: #FF6A00; margin-bottom: 4px; font-family: "Montserrat", sans-serif;'>{title}</div>
+              <div style='font-size: 13px; color: #7E848E;'>{desc}</div>
             </div>
             """,
             unsafe_allow_html=True,
@@ -175,13 +178,20 @@ for _, row in alerts_df.iterrows():
     chip_class = {"Critical": "chip-error", "Warning": "chip-warn", "Info": "chip-info"}.get(sev, "chip-info")
     st.markdown(
         f"""
-        <div style='background:white;border:1px solid #E2EAF3;border-radius:8px;
-                    padding:10px 16px;margin-bottom:6px;display:flex;align-items:center;gap:12px;'>
+        <div style='background: #1A1D24;
+                    border: 1px solid #FF6A0044;
+                    border-left: 3px solid #FF6A00;
+                    border-radius: 2px;
+                    padding: 10px 16px;
+                    margin-bottom: 6px;
+                    display: flex;
+                    align-items: center;
+                    gap: 12px;'>
           <span class='{chip_class}'>{sev}</span>
-          <span style='font-size:13px;color:#1A2E44;flex:1;'>{row["Description"]}</span>
-          <span style='font-size:11px;color:#A0AEC0;white-space:nowrap;'>{row["Machine"]} · {row["Timestamp"]}</span>
-          <span style='font-size:11px;color:#6B7C93;background:#F7F9FC;
-                       border-radius:10px;padding:2px 8px;'>{row["Agent"]}</span>
+          <span style='font-size: 13px; color: #F4F5F7; flex: 1;'>{row["Description"]}</span>
+          <span style='font-size: 11px; color: #7E848E; white-space: nowrap;'>{row["Machine"]} · {row["Timestamp"]}</span>
+          <span style='font-size: 11px; color: #FF6A00; background: #1A1D24; border: 1px solid #FF6A0055;
+                       border-radius: 0px; padding: 3px 8px;'>{row["Agent"]}</span>
         </div>
         """,
         unsafe_allow_html=True,

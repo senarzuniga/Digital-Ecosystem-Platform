@@ -1,192 +1,343 @@
-"""Shared CSS/theme styles for the Digital Ecosystem Platform."""
+"""
+Shared CSS/theme styles for the Digital Ecosystem Platform.
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+INGECART Brand Identity: Industrial Intelligence
+Color Palette (70% Black/Dark + 20% Grey + 10% Orange):
+  • Black Industrial Premium: #05070B
+  • Naranja Técnico INGECART: #FF6A00
+  • Blanco Técnico: #F4F5F7
+  • Gris Metal: #7E848E
+  • Gris Acero Oscuro: #1A1D24
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+"""
+
+# ── Color Palette (INGECART Brand) ────────────────────────────────────────
+INGECART_COLORS = {
+    "BLACK_PRIMARY": "#05070B",      # Industrial base
+    "ORANGE_PRIMARY": "#FF6A00",     # Technical accent
+    "WHITE_PRIMARY": "#F4F5F7",      # Clean, technical white
+    "GREY_METAL": "#7E848E",         # Secondary text
+    "GREY_DARK": "#1A1D24",          # Dark backgrounds
+    "GREY_LIGHT": "#2B2E35",         # Lighter dark surfaces
+}
 
 PLATFORM_CSS = """
 <style>
-/* ── Global ───────────────────────────────────────────────────── */
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+/* INGECART Dark Industrial Premium Theme                                  */
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+
+/* ── Global ───────────────────────────────────────────────────────────── */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&display=swap');
 
 html, body, [class*="css"] {
     font-family: 'Inter', sans-serif;
+    background: #05070B;
+    color: #F4F5F7;
 }
 
-/* ── Sidebar ──────────────────────────────────────────────────── */
+/* Main content background */
+.main { background: #05070B; }
+
+/* ── Sidebar (Dark Industrial) ─────────────────────────────────────────── */
 section[data-testid="stSidebar"] {
-    background: linear-gradient(180deg, #0D1B2A 0%, #1B2B40 100%);
-    border-right: 1px solid #263C55;
+    background: linear-gradient(180deg, #1A1D24 0%, #0F1115 100%);
+    border-right: 2px solid #FF6A00;
 }
 section[data-testid="stSidebar"] * {
-    color: #E0E8F0 !important;
+    color: #F4F5F7 !important;
 }
 section[data-testid="stSidebar"] .stSelectbox label,
-section[data-testid="stSidebar"] .stMarkdown p {
-    color: #A8BDD0 !important;
+section[data-testid="stSidebar"] .stMarkdown p,
+section[data-testid="stSidebar"] label {
+    color: #7E848E !important;
 }
 
-/* ── Metric cards ─────────────────────────────────────────────── */
+/* ── Metric cards (Dark + Orange accents) ────────────────────────────── */
 div[data-testid="metric-container"] {
-    background: #F7F9FC;
-    border: 1px solid #E2EAF3;
-    border-radius: 10px;
-    padding: 14px 18px;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    background: #1A1D24;
+    border: 1px solid #FF6A00;
+    border-radius: 8px;
+    padding: 16px;
+    box-shadow: 0 0 20px rgba(255, 106, 0, 0.1);
 }
 div[data-testid="metric-container"] label {
     font-size: 12px !important;
     font-weight: 600 !important;
-    color: #6B7C93 !important;
+    color: #7E848E !important;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.8px;
 }
 div[data-testid="metric-container"] div[data-testid="stMetricValue"] {
-    font-size: 26px !important;
+    font-size: 28px !important;
     font-weight: 700 !important;
-    color: #1A2E44 !important;
+    color: #FF6A00 !important;
+    font-family: 'Montserrat', sans-serif;
 }
 
-/* ── Page title ───────────────────────────────────────────────── */
+/* ── Page title (Industrial Technical) ───────────────────────────────── */
 .dep-page-title {
-    font-size: 28px;
+    font-size: 32px;
     font-weight: 700;
-    color: #1A2E44;
+    color: #FF6A00;
     margin-bottom: 4px;
+    font-family: 'Montserrat', sans-serif;
+    letter-spacing: -0.5px;
 }
 .dep-page-subtitle {
     font-size: 14px;
-    color: #6B7C93;
+    color: #7E848E;
     margin-bottom: 24px;
+    font-weight: 400;
 }
 
-/* ── Section header ───────────────────────────────────────────── */
+/* ── Section header (Technical lines) ──────────────────────────────────── */
 .dep-section-header {
     font-size: 16px;
     font-weight: 600;
-    color: #1A2E44;
-    border-left: 4px solid #1565C0;
-    padding-left: 10px;
-    margin: 20px 0 12px;
+    color: #F4F5F7;
+    border-left: 3px solid #FF6A00;
+    border-bottom: 1px solid #FF6A0033;
+    padding-left: 12px;
+    padding-bottom: 8px;
+    margin: 28px 0 16px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
-/* ── Company badge ────────────────────────────────────────────── */
+/* ── Company badge (Orange technical) ──────────────────────────────────── */
 .company-badge {
     display: inline-block;
-    padding: 4px 12px;
-    border-radius: 20px;
-    font-size: 12px;
+    padding: 6px 14px;
+    border-radius: 0px;
+    border-left: 3px solid #FF6A00;
+    background: #1A1D24;
+    font-size: 13px;
     font-weight: 600;
-    color: white;
+    color: #FF6A00;
     margin-bottom: 8px;
 }
 
-/* ── Status chips ─────────────────────────────────────────────── */
-.chip-ok     { background:#E8F5E9; color:#2E7D32; border-radius:12px; padding:3px 10px; font-size:12px; font-weight:600; }
-.chip-warn   { background:#FFF8E1; color:#F57F17; border-radius:12px; padding:3px 10px; font-size:12px; font-weight:600; }
-.chip-error  { background:#FFEBEE; color:#C62828; border-radius:12px; padding:3px 10px; font-size:12px; font-weight:600; }
-.chip-info   { background:#E3F2FD; color:#1565C0; border-radius:12px; padding:3px 10px; font-size:12px; font-weight:600; }
+/* ── Status chips (Technical industrial) ────────────────────────────────── */
+.chip-ok     { 
+    background: #2B5A1A; 
+    color: #90EE90; 
+    border-radius: 0px;
+    border-left: 2px solid #90EE90;
+    padding: 4px 10px; 
+    font-size: 12px; 
+    font-weight: 600;
+}
+.chip-warn   { 
+    background: #5A4A2B; 
+    color: #FFB84D;
+    border-radius: 0px;
+    border-left: 2px solid #FFB84D;
+    padding: 4px 10px; 
+    font-size: 12px; 
+    font-weight: 600;
+}
+.chip-error  { 
+    background: #5A2B2B; 
+    color: #FF6B6B;
+    border-radius: 0px;
+    border-left: 2px solid #FF6B6B;
+    padding: 4px 10px; 
+    font-size: 12px; 
+    font-weight: 600;
+}
+.chip-info   { 
+    background: #2B4A5A; 
+    color: #FF6A00;
+    border-radius: 0px;
+    border-left: 2px solid #FF6A00;
+    padding: 4px 10px; 
+    font-size: 12px; 
+    font-weight: 600;
+}
 
-/* ── Alert boxes ──────────────────────────────────────────────── */
+/* ── Alert boxes (Dark theme with functional colors) ───────────────────── */
 .dep-alert-warning {
-    background: #FFF8E1;
-    border-left: 4px solid #FFC107;
-    border-radius: 6px;
+    background: #5A4A2B;
+    border-left: 4px solid #FFB84D;
+    border-radius: 0px;
     padding: 12px 16px;
     font-size: 14px;
-    color: #5D4037;
+    color: #FFB84D;
     margin: 8px 0;
 }
 .dep-alert-success {
-    background: #E8F5E9;
-    border-left: 4px solid #43A047;
-    border-radius: 6px;
+    background: #2B5A1A;
+    border-left: 4px solid #90EE90;
+    border-radius: 0px;
     padding: 12px 16px;
     font-size: 14px;
-    color: #1B5E20;
+    color: #90EE90;
     margin: 8px 0;
 }
 .dep-alert-info {
-    background: #E3F2FD;
-    border-left: 4px solid #1E88E5;
-    border-radius: 6px;
+    background: #2B4A5A;
+    border-left: 4px solid #FF6A00;
+    border-radius: 0px;
     padding: 12px 16px;
     font-size: 14px;
-    color: #0D47A1;
+    color: #FF6A00;
     margin: 8px 0;
 }
 
-/* ── Agent card ───────────────────────────────────────────────── */
+/* ── Agent card (Dark industrial card) ──────────────────────────────────── */
 .agent-card {
-    background: white;
-    border: 1px solid #E2EAF3;
-    border-radius: 12px;
+    background: #1A1D24;
+    border: 1px solid #FF6A0044;
+    border-left: 3px solid #FF6A00;
+    border-radius: 2px;
     padding: 16px;
     margin-bottom: 12px;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+    box-shadow: 0 0 15px rgba(255, 106, 0, 0.05);
 }
 .agent-card-title {
     font-size: 15px;
     font-weight: 600;
-    color: #1A2E44;
+    color: #FF6A00;
+    font-family: 'Montserrat', sans-serif;
 }
 .agent-card-role {
     font-size: 12px;
-    color: #6B7C93;
-    margin-top: 2px;
+    color: #7E848E;
+    margin-top: 4px;
 }
 
-/* ── Maturity level pills ─────────────────────────────────────── */
-.maturity-l1 { background:#EDE7F6; color:#4527A0; }
-.maturity-l2 { background:#E3F2FD; color:#1565C0; }
-.maturity-l3 { background:#E8F5E9; color:#2E7D32; }
-.maturity-l4 { background:#FFF8E1; color:#E65100; }
-.maturity-l5 { background:#FCE4EC; color:#880E4F; }
+/* ── Maturity level pills (Industrial dark) ────────────────────────────── */
+.maturity-l1 { background: #1A1D24; color: #7E848E; border-left: 3px solid #FF6A00; }
+.maturity-l2 { background: #1A1D24; color: #FF6A00; border-left: 3px solid #FF6A00; }
+.maturity-l3 { background: #1A1D24; color: #90EE90; border-left: 3px solid #90EE90; }
+.maturity-l4 { background: #1A1D24; color: #FFB84D; border-left: 3px solid #FFB84D; }
+.maturity-l5 { background: #1A1D24; color: #FF6A00; border-left: 3px solid #FF6A00; }
 .maturity-pill {
     display: inline-block;
-    border-radius: 20px;
-    padding: 4px 14px;
-    font-size: 13px;
+    border-radius: 0px;
+    padding: 6px 12px;
+    font-size: 12px;
     font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
-/* ── Divider ──────────────────────────────────────────────────── */
+/* ── Divider (Technical line) ──────────────────────────────────────────── */
 .dep-divider {
     border: none;
-    border-top: 1px solid #E2EAF3;
-    margin: 20px 0;
+    border-top: 1px solid #FF6A0044;
+    margin: 24px 0;
 }
+
+/* ── Technical Blueprint Lines ─────────────────────────────────────────── */
+.blueprint-border {
+    border: 1px dashed #FF6A0055;
+    border-radius: 2px;
+}
+
+/* ── Orange Glow Effect (Subtle) ───────────────────────────────────────── */
+.glow-orange {
+    box-shadow: 0 0 20px rgba(255, 106, 0, 0.15);
+}
+
+/* ── Data elements (Tables, forms) ─────────────────────────────────────── */
+[data-testid="stTable"] {
+    background: #1A1D24 !important;
+}
+[data-testid="stTable"] tbody tr {
+    border-bottom: 1px solid #FF6A0033 !important;
+}
+[data-testid="stTable"] thead tr {
+    border-bottom: 2px solid #FF6A00 !important;
+}
+
+/* ── Inputs & Forms ────────────────────────────────────────────────────── */
+.stTextInput > div > div > input,
+.stNumberInput > div > div > input,
+.stSelectbox > div > div > select {
+    background-color: #2B2E35 !important;
+    color: #F4F5F7 !important;
+    border: 1px solid #FF6A0055 !important;
+}
+
+/* ── Buttons ───────────────────────────────────────────────────────────── */
+.stButton > button {
+    background-color: #FF6A00 !important;
+    color: white !important;
+    border: none !important;
+    font-weight: 600 !important;
+    border-radius: 2px !important;
+}
+.stButton > button:hover {
+    background-color: #E85A00 !important;
+    box-shadow: 0 0 15px rgba(255, 106, 0, 0.3) !important;
+}
+
 </style>
 """
 
 MATURITY_LEVELS = {
-    1: {"label": "L1 – Monitoring",        "color": "#4527A0", "bg": "#EDE7F6"},
-    2: {"label": "L2 – Analytics",         "color": "#1565C0", "bg": "#E3F2FD"},
-    3: {"label": "L3 – Predictive",        "color": "#2E7D32", "bg": "#E8F5E9"},
-    4: {"label": "L4 – Semi-Autonomous",   "color": "#E65100", "bg": "#FFF8E1"},
-    5: {"label": "L5 – Fully Autonomous",  "color": "#880E4F", "bg": "#FCE4EC"},
+    1: {"label": "L1 – Monitoring",        "color": "#FF6A00", "bg": "#1A1D24"},
+    2: {"label": "L2 – Analytics",         "color": "#FF6A00", "bg": "#1A1D24"},
+    3: {"label": "L3 – Predictive",        "color": "#90EE90", "bg": "#1A1D24"},
+    4: {"label": "L4 – Semi-Autonomous",   "color": "#FFB84D", "bg": "#1A1D24"},
+    5: {"label": "L5 – Fully Autonomous",  "color": "#FF6A00", "bg": "#1A1D24"},
 }
 
 
 def render_company_header(company: dict) -> str:
-    """Return HTML for the active-company header strip."""
-    color = company.get("logo_color", "#1565C0")
+    """Return HTML for the active-company header strip (INGECART Dark Industrial Theme)."""
     name  = company.get("name", "—")
     sector = company.get("sector", "")
     country = company.get("country", "")
     lvl = company.get("maturity_level", 1)
     mat = MATURITY_LEVELS.get(lvl, MATURITY_LEVELS[1])
+    
     return f"""
-    <div style="background:{color}12; border:1px solid {color}44;
-                border-radius:10px; padding:12px 18px; margin-bottom:20px;
-                display:flex; align-items:center; gap:16px;">
-      <div style="width:42px;height:42px;border-radius:50%;background:{color};
-                  display:flex;align-items:center;justify-content:center;
-                  font-size:18px;font-weight:700;color:white;">
+    <div style="background: linear-gradient(90deg, #1A1D24 0%, #0F1115 100%);
+                border: 1px solid #FF6A0055;
+                border-left: 3px solid #FF6A00;
+                border-radius: 2px;
+                padding: 14px 18px;
+                margin-bottom: 24px;
+                display: flex;
+                align-items: center;
+                gap: 18px;
+                box-shadow: 0 0 20px rgba(255, 106, 0, 0.1);">
+      <div style="width: 48px;
+                  height: 48px;
+                  border-radius: 0px;
+                  background: #FF6A00;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  font-size: 20px;
+                  font-weight: 700;
+                  color: white;
+                  border: 2px solid #05070B;">
         {name[0]}
       </div>
       <div>
-        <div style="font-size:17px;font-weight:700;color:#1A2E44;">{name}</div>
-        <div style="font-size:13px;color:#6B7C93;">{sector} · {country}</div>
+        <div style="font-size: 18px;
+                    font-weight: 700;
+                    color: #FF6A00;
+                    font-family: 'Montserrat', sans-serif;
+                    letter-spacing: -0.5px;">
+          {name}
+        </div>
+        <div style="font-size: 13px;
+                    color: #7E848E;
+                    margin-top: 2px;
+                    font-weight: 400;">
+          {sector} • {country}
+        </div>
       </div>
-      <div style="margin-left:auto;">
-        <span class="maturity-pill" style="background:{mat['bg']};color:{mat['color']};">
+      <div style="margin-left: auto;">
+        <span class="maturity-pill" style="background: {mat['bg']};
+                                           color: {mat['color']};
+                                           border-left: 3px solid {mat['color']};">
           {mat['label']}
         </span>
       </div>

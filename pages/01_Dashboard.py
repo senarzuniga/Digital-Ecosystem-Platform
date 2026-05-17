@@ -32,9 +32,9 @@ COMPANY_MAP = {c["name"]: c for c in COMPANIES}
 
 with st.sidebar:
     st.markdown(
-        "<div style='font-size:16px;font-weight:700;color:#E0E8F0;padding:12px 0 4px;'>"
-        "🏭 Digital Ecosystem</div>"
-        "<hr style='border-color:#263C55;margin:4px 0 12px;'/>",
+        "<div style='font-size:16px;font-weight:700;color:#FF6A00;padding:12px 0 4px;'>"
+        "🏭 INGECART</div>"
+        "<hr style='border-color:#FF6A00;margin:4px 0 12px;'/>",
         unsafe_allow_html=True,
     )
     st.markdown("**🏢 Active Company**")
@@ -56,7 +56,7 @@ with st.sidebar:
         f"{mat['label']}</span>",
         unsafe_allow_html=True,
     )
-    st.markdown("<hr style='border-color:#263C55;margin:12px 0;'/>", unsafe_allow_html=True)
+    st.markdown("<hr style='border-color:#FF6A0044;margin:12px 0;'/>", unsafe_allow_html=True)
     st.page_link("app.py",                           label="🏠  Overview")
     st.page_link("pages/01_Dashboard.py",            label="📊  Dashboard")
     st.page_link("pages/02_Machine_Connectivity.py", label="🔌  Connectivity")
@@ -158,13 +158,13 @@ for _, row in alerts_df.iterrows():
     chip = {"Critical": "chip-error", "Warning": "chip-warn", "Info": "chip-info"}.get(sev, "chip-info")
     st.markdown(
         f"""
-        <div style='background:white;border:1px solid #E2EAF3;border-radius:8px;
-                    padding:10px 16px;margin-bottom:6px;display:flex;align-items:center;gap:12px;'>
+        <div style='background:#F4F5F7;border:1px solid #E2EAF3;border-radius:8px;
+                padding:10px 16px;margin-bottom:6px;display:flex;align-items:center;gap:12px;'>
           <span class='{chip}'>{sev}</span>
-          <span style='font-size:13px;color:#1A2E44;flex:1;'>{row["Description"]}</span>
-          <span style='font-size:11px;color:#A0AEC0;white-space:nowrap;'>{row["Machine"]} · {row["Timestamp"]}</span>
-          <span style='font-size:11px;color:#6B7C93;background:#F7F9FC;border-radius:10px;
-                       padding:2px 8px;'>{row["Agent"]}</span>
+          <span style='font-size:13px;color:#1A1D24;flex:1;font-weight:500;'>{row["Description"]}</span>
+          <span style='font-size:11px;color:#7E848E;white-space:nowrap;'>{row["Machine"]} · {row["Timestamp"]}</span>
+          <span style='font-size:11px;color:#7E848E;background:#F4F5F7;border-radius:10px;
+                   padding:2px 8px;'>{row["Agent"]}</span>
         </div>
         """,
         unsafe_allow_html=True,

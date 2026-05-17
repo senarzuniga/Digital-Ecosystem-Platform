@@ -32,9 +32,9 @@ COMPANY_MAP = {c["name"]: c for c in COMPANIES}
 # ── Sidebar ────────────────────────────────────────────────────────────────────
 with st.sidebar:
     st.markdown(
-        "<div style='font-size:16px;font-weight:700;color:#E0E8F0;padding:12px 0 4px;'>"
-        "🏭 Digital Ecosystem</div>"
-        "<hr style='border-color:#263C55;margin:4px 0 12px;'/>",
+        "<div style='font-size:16px;font-weight:700;color:#FF6A00;padding:12px 0 4px;'>"
+        "🏭 INGECART</div>"
+        "<hr style='border-color:#FF6A00;margin:4px 0 12px;'/>",
         unsafe_allow_html=True,
     )
     st.markdown("**🏢 Active Company**")
@@ -56,7 +56,7 @@ with st.sidebar:
         f"{mat['label']}</span>",
         unsafe_allow_html=True,
     )
-    st.markdown("<hr style='border-color:#263C55;margin:12px 0;'/>", unsafe_allow_html=True)
+    st.markdown("<hr style='border-color:#FF6A0044;margin:12px 0;'/>", unsafe_allow_html=True)
     st.page_link("app.py",                           label="🏠  Overview")
     st.page_link("pages/01_Dashboard.py",            label="📊  Dashboard")
     st.page_link("pages/02_Machine_Connectivity.py", label="🔌  Connectivity")
@@ -127,17 +127,17 @@ with tab1:
         }.get(row["Priority"], "chip-info")
         st.markdown(
             f"""
-            <div style='background:white;border:1px solid #E2EAF3;border-radius:10px;
-                        padding:14px 18px;margin-bottom:10px;'>
-              <div style='display:flex;align-items:center;gap:12px;margin-bottom:6px;'>
-                <span class='{priority_chip}'>{row["Priority"]}</span>
-                <span style='font-size:15px;font-weight:600;color:#1A2E44;'>{row["Offer"]}</span>
-                <span style='margin-left:auto;font-size:14px;font-weight:700;color:#2E7D32;'>
-                  ${row["Est. Value ($)"]:,.0f}
-                </span>
-              </div>
-              <div style='font-size:12px;color:#6B7C93;display:flex;gap:16px;'>
-                <span>📦 {row["Category"]}</span>
+                        <div style='background:#F4F5F7;border:1px solid #E2EAF3;border-radius:10px;
+                                                padding:14px 18px;margin-bottom:10px;'>
+                            <div style='display:flex;align-items:center;gap:12px;margin-bottom:6px;'>
+                                <span class='{priority_chip}'>{row["Priority"]}</span>
+                                <span style='font-size:15px;font-weight:700;color:#1A1D24;'>{row["Offer"]}</span>
+                                <span style='margin-left:auto;font-size:14px;font-weight:700;color:#2E7D32;'>
+                                    ${row["Est. Value ($)":,.0f}
+                                </span>
+                            </div>
+                            <div style='font-size:12px;color:#7E848E;display:flex;gap:16px;'>
+                                <span>📦 {row["Category"]}</span>
                 <span>🔩 {row["Machine"]}</span>
                 <span>⚡ Trigger: <em>{row["Trigger"]}</em></span>
               </div>
@@ -254,7 +254,7 @@ with tab4:
                 unsafe_allow_html=True)
 
     GROWTH_BLOCKS = [
-        ("🔍", "Installed Base Visibility", "#1565C0",
+        ("🔍", "Installed Base Visibility", "#FF6A00",
          "You need: a complete, always-current registry of every machine in the field — "
          "segmented by age, status, contract, and upgrade potential. "
          "Without it: you are flying blind on the installed base and cannot prioritise service or commercial actions."),
@@ -304,10 +304,9 @@ with tab4:
         with cols[idx % 2]:
             st.markdown(
                 f"""
-                <div style='border-left:4px solid {color};background:white;border-radius:8px;
-                            padding:14px 16px;margin-bottom:12px;border:1px solid #E2EAF3;
-                            border-left:4px solid {color};'>
-                  <div style='font-size:14px;font-weight:600;color:{color};margin-bottom:6px;'>
+                                <div style='border-left:4px solid {color};background:#F4F5F7;border-radius:8px;
+                                                        padding:14px 16px;margin-bottom:12px;border:1px solid #E2EAF3;'>
+                                    <div style='font-size:14px;font-weight:700;color:#1A1D24;margin-bottom:6px;'>
                     {icon}  {title}
                   </div>
                   <div style='font-size:13px;color:#4A5568;'>{body}</div>
@@ -322,7 +321,7 @@ with tab4:
                 unsafe_allow_html=True)
 
     stages = [
-        ("📦 Sale",        "#1565C0", "Machine sold + basic connectivity package"),
+        ("📦 Sale",        "#FF6A00", "Machine sold + basic connectivity package"),
         ("📊 Onboard",     "#2E7D32", "Digital twin activated · Baseline established"),
         ("🔮 Predictive",  "#6A1B9A", "Predictive maintenance subscription started"),
         ("⚡ Autonomous",  "#E65100", "Autonomous service tier · Auto-parts ordering"),

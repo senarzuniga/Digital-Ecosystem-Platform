@@ -28,9 +28,9 @@ COMPANY_MAP = {c["name"]: c for c in COMPANIES}
 # ── Sidebar ────────────────────────────────────────────────────────────────────
 with st.sidebar:
     st.markdown(
-        "<div style='font-size:16px;font-weight:700;color:#E0E8F0;padding:12px 0 4px;'>"
-        "🏭 Digital Ecosystem</div>"
-        "<hr style='border-color:#263C55;margin:4px 0 12px;'/>",
+        "<div style='font-size:16px;font-weight:700;color:#FF6A00;padding:12px 0 4px;'>"
+        "🏭 INGECART</div>"
+        "<hr style='border-color:#FF6A00;margin:4px 0 12px;'/>",
         unsafe_allow_html=True,
     )
     st.markdown("**🏢 Active Company**")
@@ -52,7 +52,7 @@ with st.sidebar:
         f"{mat['label']}</span>",
         unsafe_allow_html=True,
     )
-    st.markdown("<hr style='border-color:#263C55;margin:12px 0;'/>", unsafe_allow_html=True)
+    st.markdown("<hr style='border-color:#FF6A0044;margin:12px 0;'/>", unsafe_allow_html=True)
     st.page_link("app.py",                           label="🏠  Overview")
     st.page_link("pages/01_Dashboard.py",            label="📊  Dashboard")
     st.page_link("pages/02_Machine_Connectivity.py", label="🔌  Connectivity")
@@ -165,7 +165,7 @@ st.markdown('<div class="dep-section-header">Digital Twin Hierarchy (Blueprint)<
             unsafe_allow_html=True)
 
 twin_scope = [
-    ("🔩 Machine Twin",        "#1565C0",
+    ("🔩 Machine Twin",        "#FF6A00",
      "Physical replica of each individual machine — sensors, kinematics, wear model, "
      "thermal model, and predictive component health."),
     ("⚙️ Process Twin",        "#2E7D32",
@@ -184,10 +184,9 @@ for idx, (title, color, desc) in enumerate(twin_scope):
     with cols[idx % 2]:
         st.markdown(
             f"""
-            <div style='border-left:4px solid {color};background:white;border-radius:8px;
-                        padding:14px 16px;margin-bottom:12px;border:1px solid #E2EAF3;
-                        border-left:4px solid {color};'>
-              <div style='font-size:14px;font-weight:600;color:{color};'>{title}</div>
+                        <div style='border-left:4px solid {color};background:#F4F5F7;border-radius:8px;
+                                                padding:14px 16px;margin-bottom:12px;border:1px solid #E2EAF3;'>
+                            <div style='font-size:14px;font-weight:700;color:#1A1D24;'>{title}</div>
               <div style='font-size:13px;color:#4A5568;margin-top:6px;'>{desc}</div>
             </div>
             """,

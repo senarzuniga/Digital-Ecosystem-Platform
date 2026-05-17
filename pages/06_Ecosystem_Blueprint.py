@@ -25,9 +25,9 @@ COMPANY_MAP = {c["name"]: c for c in COMPANIES}
 # ── Sidebar ────────────────────────────────────────────────────────────────────
 with st.sidebar:
     st.markdown(
-        "<div style='font-size:16px;font-weight:700;color:#E0E8F0;padding:12px 0 4px;'>"
-        "🏭 Digital Ecosystem</div>"
-        "<hr style='border-color:#263C55;margin:4px 0 12px;'/>",
+        "<div style='font-size:16px;font-weight:700;color:#FF6A00;padding:12px 0 4px;'>"
+        "🏭 INGECART</div>"
+        "<hr style='border-color:#FF6A00;margin:4px 0 12px;'/>",
         unsafe_allow_html=True,
     )
     st.markdown("**🏢 Active Company**")
@@ -49,7 +49,7 @@ with st.sidebar:
         f"{mat['label']}</span>",
         unsafe_allow_html=True,
     )
-    st.markdown("<hr style='border-color:#263C55;margin:12px 0;'/>", unsafe_allow_html=True)
+    st.markdown("<hr style='border-color:#FF6A0044;margin:12px 0;'/>", unsafe_allow_html=True)
     st.page_link("app.py",                           label="🏠  Overview")
     st.page_link("pages/01_Dashboard.py",            label="📊  Dashboard")
     st.page_link("pages/02_Machine_Connectivity.py", label="🔌  Connectivity")
@@ -75,7 +75,7 @@ BLUEPRINT_PILLARS = [
     {
         "icon": "🌐",
         "title": "Hyper-Connectivity (OEM-Agnostic)",
-        "color": "#1565C0",
+        "color": "#FF6A00",
         "summary": "Connect any machine, any brand, any age — without ripping and replacing.",
         "details": [
             "OPC-UA, MQTT, REST, Modbus, PROFINET — universal protocol adapters",
@@ -242,19 +242,19 @@ st.markdown('<div class="dep-section-header">Architecture Stack Overview</div>',
             unsafe_allow_html=True)
 
 stack_layers = [
-    ("#0D1B2A", "white",   "👤  User Layer",          "Conversational AI · Role-based dashboards · Mobile · Explainability"),
-    ("#1565C0", "white",   "🤖  AI Agent Layer",       "Orchestrator · 7 Specialized Agents · Continuous Learning · Marketplace"),
-    ("#2E7D32", "white",   "🪞  Digital Core",         "Streaming Pipeline · Data Lake · Feature Store · Digital Twins · ERP/MES"),
-    ("#6A1B9A", "white",   "🔌  Edge & Connectivity",  "OPC-UA · MQTT · REST · Edge Gateways · Brownfield Adapters · Zero-Trust Security"),
-    ("#263C55", "#A8BDD0", "🔩  Physical Layer",       "Machines · PLCs · Sensors · Actuators · Robots · Conveyor Systems"),
+    ("#1A1D24", "#FF6A00", "👤  User Layer",          "Conversational AI · Role-based dashboards · Mobile · Explainability"),
+    ("#1A1D24", "#FF6A00", "🤖  AI Agent Layer",       "Orchestrator · 7 Specialized Agents · Continuous Learning · Marketplace"),
+    ("#1A1D24", "#90EE90", "🪞  Digital Core",         "Streaming Pipeline · Data Lake · Feature Store · Digital Twins · ERP/MES"),
+    ("#1A1D24", "#FFB84D", "🔌  Edge & Connectivity",  "OPC-UA · MQTT · REST · Edge Gateways · Brownfield Adapters · Zero-Trust Security"),
+    ("#05070B", "#7E848E", "🔩  Physical Layer",       "Machines · PLCs · Sensors · Actuators · Robots · Conveyor Systems"),
 ]
 
 for bg, fg, label, content in stack_layers:
     st.markdown(
         f"""
-        <div style='background:{bg};border-radius:8px;padding:14px 20px;margin-bottom:6px;'>
+        <div style='background:{bg};border-radius:2px;padding:14px 20px;margin-bottom:6px;border-left:3px solid {fg};'>
           <div style='font-size:14px;font-weight:700;color:{fg};margin-bottom:4px;'>{label}</div>
-          <div style='font-size:12px;color:{"#A8BDD0" if bg == "#0D1B2A" else "#C8D8E8"};'>
+          <div style='font-size:12px;color:#7E848E;'>
             {content}
           </div>
         </div>
@@ -271,13 +271,13 @@ col1, col2 = st.columns(2)
 with col1:
     st.markdown(
         """
-        <div style='background:#FFF8E1;border:1px solid #FFD54F;border-radius:10px;padding:16px 18px;'>
-          <div style='font-size:14px;font-weight:700;color:#E65100;margin-bottom:8px;'>
-            📊 Today (IIoT Market Standard)
-          </div>
-          <div style='font-size:13px;color:#5D4037;'>
-            Data → Dashboard → Human → Decision → Action
-          </div>
+                <div style='background:#F4F5F7;border:1px solid #FFD54F;border-radius:10px;padding:16px 18px;'>
+                    <div style='font-size:14px;font-weight:700;color:#1A1D24;margin-bottom:8px;'>
+                        📊 Today (IIoT Market Standard)
+                    </div>
+                    <div style='font-size:13px;color:#7E848E;'>
+                        Data → Dashboard → Human → Decision → Action
+                    </div>
           <ul style='font-size:13px;color:#5D4037;margin-top:8px;'>
             <li>Manual interpretation required</li>
             <li>Slow response to events</li>

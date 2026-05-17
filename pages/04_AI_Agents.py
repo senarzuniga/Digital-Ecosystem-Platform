@@ -29,9 +29,9 @@ COMPANY_MAP = {c["name"]: c for c in COMPANIES}
 # ── Sidebar ────────────────────────────────────────────────────────────────────
 with st.sidebar:
     st.markdown(
-        "<div style='font-size:16px;font-weight:700;color:#E0E8F0;padding:12px 0 4px;'>"
-        "🏭 Digital Ecosystem</div>"
-        "<hr style='border-color:#263C55;margin:4px 0 12px;'/>",
+        "<div style='font-size:16px;font-weight:700;color:#FF6A00;padding:12px 0 4px;'>"
+        "🏭 INGECART</div>"
+        "<hr style='border-color:#FF6A00;margin:4px 0 12px;'/>",
         unsafe_allow_html=True,
     )
     st.markdown("**🏢 Active Company**")
@@ -53,7 +53,7 @@ with st.sidebar:
         f"{mat['label']}</span>",
         unsafe_allow_html=True,
     )
-    st.markdown("<hr style='border-color:#263C55;margin:12px 0;'/>", unsafe_allow_html=True)
+    st.markdown("<hr style='border-color:#FF6A0044;margin:12px 0;'/>", unsafe_allow_html=True)
     st.page_link("app.py",                           label="🏠  Overview")
     st.page_link("pages/01_Dashboard.py",            label="📊  Dashboard")
     st.page_link("pages/02_Machine_Connectivity.py", label="🔌  Connectivity")
@@ -130,14 +130,14 @@ if locked_agents:
         with cols2[idx % 2]:
             st.markdown(
                 f"""
-                <div style='background:#F7F9FC;border:1px solid #E2EAF3;border-radius:10px;
-                            padding:14px 16px;margin-bottom:10px;opacity:0.65;'>
-                  <div style='font-size:24px;'>{agent['icon']}</div>
-                  <div style='font-size:14px;font-weight:600;color:#6B7C93;margin-top:4px;'>
-                    {agent['name']}
-                  </div>
-                  <div style='font-size:12px;color:#A0AEC0;'>{agent['role']}</div>
-                  <div style='margin-top:8px;'>
+                                <div style='background:#F4F5F7;border:1px solid #E2EAF3;border-radius:10px;
+                                                        padding:14px 16px;margin-bottom:10px;opacity:0.85;'>
+                                    <div style='font-size:24px;color:#1A1D24;'>{agent['icon']}</div>
+                                    <div style='font-size:14px;font-weight:700;color:#1A1D24;margin-top:4px;'>
+                                        {agent['name']}
+                                    </div>
+                                    <div style='font-size:12px;color:#7E848E;'>{agent['role']}</div>
+                                    <div style='margin-top:8px;'>
                     <span class='chip-warn'>Requires Maturity L{agent['maturity_min']}</span>
                   </div>
                 </div>
@@ -200,14 +200,14 @@ for entry in log_entries:
     ts_str = entry["time"].strftime("%Y-%m-%d %H:%M")
     st.markdown(
         f"""
-        <div style='background:white;border:1px solid #E2EAF3;border-radius:8px;
-                    padding:10px 16px;margin-bottom:6px;display:flex;align-items:center;gap:12px;'>
-          <div style='width:32px;height:32px;border-radius:50%;
-                      background:{entry["color"]}22;display:flex;align-items:center;
-                      justify-content:center;font-size:16px;'>{entry["icon"]}</div>
-          <div style='flex:1;'>
-            <span style='font-size:12px;font-weight:600;color:{entry["color"]};'>
-              {entry["agent"]}</span>
+                <div style='background:#F4F5F7;border:1px solid #E2EAF3;border-radius:8px;
+                                        padding:10px 16px;margin-bottom:6px;display:flex;align-items:center;gap:12px;'>
+                    <div style='width:32px;height:32px;border-radius:50%;
+                                            background:{entry["color"]}22;display:flex;align-items:center;
+                                            justify-content:center;font-size:16px;color:#1A1D24;'>{entry["icon"]}</div>
+                    <div style='flex:1;'>
+                        <span style='font-size:12px;font-weight:700;color:#1A1D24;'>
+                            {entry["agent"]}</span>
             <div style='font-size:13px;color:#1A2E44;margin-top:2px;'>{entry["action"]}</div>
           </div>
           <span style='font-size:11px;color:#A0AEC0;white-space:nowrap;'>{ts_str}</span>
