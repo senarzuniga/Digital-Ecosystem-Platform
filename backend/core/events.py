@@ -1,3 +1,4 @@
+
 """
 Event bus — publish/subscribe for domain events.
 
