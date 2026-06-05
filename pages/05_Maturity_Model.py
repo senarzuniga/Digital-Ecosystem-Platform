@@ -27,9 +27,11 @@ COMPANY_MAP = {c["name"]: c for c in COMPANIES}
 # ── Sidebar ────────────────────────────────────────────────────────────────────
 with st.sidebar:
     st.markdown(
-        "<div style='font-size:16px;font-weight:700;color:#FF6A00;padding:12px 0 4px;'>"
-        "🏭 INGECART</div>"
-        "<hr style='border-color:#FF6A00;margin:4px 0 12px;'/>",
+        "<div style='text-align:center;padding:16px 0 12px;border-bottom:1px solid rgba(255,106,0,0.2);margin-bottom:14px;'>"
+        "<div style='font-size:10px;font-weight:700;color:#FF6A00;letter-spacing:4px;text-transform:uppercase;margin-bottom:6px;'>◆ ING_DIGHUB</div>"
+        "<div style='font-family:Poppins,sans-serif;font-size:18px;font-weight:800;color:#EDEFF2;letter-spacing:-0.5px;'>INGECART</div>"
+        "<div style='font-size:10px;color:#8898AA;margin-top:3px;letter-spacing:0.5px;'>Industrial Intelligence Platform</div>"
+        "</div>",
         unsafe_allow_html=True,
     )
     st.markdown("**🏢 Active Company**")
@@ -223,7 +225,7 @@ with col_r:
         showlegend=False,
         height=340,
         margin=dict(l=20, r=20, t=20, b=20),
-        paper_bgcolor="white",
+        paper_bgcolor="rgba(0,0,0,0)",
     )
     st.plotly_chart(fig, use_container_width=True)
 
@@ -235,12 +237,12 @@ for col, (dim, score) in zip(dim_cols, scores.items()):
     color = "#43A047" if score >= 70 else ("#FFA726" if score >= 40 else "#EF5350")
     col.markdown(
         f"""
-                <div style='background:#F4F5F7;border:1px solid #E2EAF3;border-radius:10px;
-                                        padding:12px;text-align:center;'>
-                    <div style='font-size:11px;color:#7E848E;font-weight:600;text-transform:uppercase;
-                                            letter-spacing:0.4px;margin-bottom:4px;'>{dim}</div>
-                    <div style='font-size:24px;font-weight:700;color:#1A1D24;'>{score}</div>
-                    <div style='font-size:10px;color:#7E848E;'>/ 100</div>
+                <div style='background:rgba(15,22,35,0.85);border:1px solid rgba(255,255,255,0.07);border-radius:14px;
+                                        padding:12px;text-align:center;backdrop-filter:blur(8px);'>
+                    <div style='font-size:10px;color:#8898AA;font-weight:700;text-transform:uppercase;
+                                            letter-spacing:0.8px;margin-bottom:4px;'>{dim}</div>
+                    <div style='font-size:24px;font-weight:700;color:{color};font-family:Poppins,sans-serif;'>{score}</div>
+                    <div style='font-size:10px;color:#8898AA;'>/ 100</div>
         </div>
         """,
         unsafe_allow_html=True,
@@ -255,7 +257,7 @@ for level_num, level_data in LEVEL_DEFINITIONS.items():
     mat_l = MATURITY_LEVELS[level_num]
     is_current = level_num == lvl
     border = f"2px solid {mat_l['color']}" if is_current else f"1px solid #E2EAF3"
-    bg     = mat_l["bg"] if is_current else "white"
+    bg     = mat_l["bg"] if is_current else "rgba(15,22,35,0.7)"
     badge  = " ← Current" if is_current else ""
 
     with st.expander(f"{mat_l['label']}{badge}", expanded=is_current):
@@ -282,34 +284,34 @@ st.markdown('<div class="dep-section-header">Market Positioning (Where the marke
 
 st.markdown(
     """
-    <div style='background:#F4F5F7;border:1px solid #E2EAF3;border-radius:10px;padding:18px 20px;'>
+    <div style='background:rgba(15,22,35,0.85);border:1px solid rgba(255,255,255,0.07);border-radius:16px;padding:18px 20px;backdrop-filter:blur(8px);'>
     <table style='width:100%;border-collapse:collapse;font-size:13px;'>
       <thead>
-                <tr style='background:#F4F5F7;'>
-                    <th style='text-align:left;padding:8px 12px;color:#1A1D24;font-weight:700;'>Segment</th>
-                    <th style='text-align:left;padding:8px 12px;color:#7E848E;font-weight:600;'>Market Median</th>
+                <tr style='background:rgba(15,22,35,0.9);'>
+                    <th style='text-align:left;padding:8px 12px;color:#EDEFF2;font-weight:700;'>Segment</th>
+                    <th style='text-align:left;padding:8px 12px;color:#8898AA;font-weight:600;'>Market Median</th>
                     <th style='text-align:left;padding:8px 12px;color:#FF6A00;font-weight:700;'>Best-in-Class Target</th>
-                    <th style='text-align:left;padding:8px 12px;color:#2E7D32;font-weight:700;'>Competitive Advantage</th>
+                    <th style='text-align:left;padding:8px 12px;color:#22C55E;font-weight:700;'>Competitive Advantage</th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td style='padding:8px 12px;color:#1A2E44;font-weight:500;border-top:1px solid #E2EAF3;'>SME Manufacturers</td>
-          <td style='padding:8px 12px;color:#6B7C93;border-top:1px solid #E2EAF3;'>L1–L2 (Monitoring + basic analytics)</td>
-          <td style='padding:8px 12px;color:#FF6A00;border-top:1px solid #E2EAF3;'>L3 (Predictive)</td>
-          <td style='padding:8px 12px;color:#2E7D32;border-top:1px solid #E2EAF3;'>Faster time-to-insight, lower TCO</td>
+          <td style='padding:8px 12px;color:#EDEFF2;font-weight:500;border-top:1px solid rgba(255,255,255,0.07);'>SME Manufacturers</td>
+          <td style='padding:8px 12px;color:#8898AA;border-top:1px solid rgba(255,255,255,0.07);'>L1–L2 (Monitoring + basic analytics)</td>
+          <td style='padding:8px 12px;color:#FF6A00;border-top:1px solid rgba(255,255,255,0.07);'>L3 (Predictive)</td>
+          <td style='padding:8px 12px;color:#22C55E;border-top:1px solid rgba(255,255,255,0.07);'>Faster time-to-insight, lower TCO</td>
         </tr>
-        <tr style='background:#FAFBFD;'>
-          <td style='padding:8px 12px;color:#1A2E44;font-weight:500;'>Mid-market OEMs</td>
-          <td style='padding:8px 12px;color:#6B7C93;'>L2–L3 (Analytics + early predictive)</td>
+        <tr style='background:rgba(255,255,255,0.02);'>
+          <td style='padding:8px 12px;color:#EDEFF2;font-weight:500;'>Mid-market OEMs</td>
+          <td style='padding:8px 12px;color:#8898AA;'>L2–L3 (Analytics + early predictive)</td>
           <td style='padding:8px 12px;color:#FF6A00;'>L4 (Semi-autonomous)</td>
-          <td style='padding:8px 12px;color:#2E7D32;'>Autonomous actions reduce OpEx 20–35%</td>
+          <td style='padding:8px 12px;color:#22C55E;'>Autonomous actions reduce OpEx 20–35%</td>
         </tr>
         <tr>
-          <td style='padding:8px 12px;color:#1A2E44;font-weight:500;border-top:1px solid #E2EAF3;'>Enterprise / Global OEMs</td>
-          <td style='padding:8px 12px;color:#6B7C93;border-top:1px solid #E2EAF3;'>L3–L4 (Predictive + semi-auto)</td>
-          <td style='padding:8px 12px;color:#FF6A00;border-top:1px solid #E2EAF3;'>L5 (Fully autonomous)</td>
-          <td style='padding:8px 12px;color:#2E7D32;border-top:1px solid #E2EAF3;'>Platform network effects + ecosystem lock-in</td>
+          <td style='padding:8px 12px;color:#EDEFF2;font-weight:500;border-top:1px solid rgba(255,255,255,0.07);'>Enterprise / Global OEMs</td>
+          <td style='padding:8px 12px;color:#8898AA;border-top:1px solid rgba(255,255,255,0.07);'>L3–L4 (Predictive + semi-auto)</td>
+          <td style='padding:8px 12px;color:#FF6A00;border-top:1px solid rgba(255,255,255,0.07);'>L5 (Fully autonomous)</td>
+          <td style='padding:8px 12px;color:#22C55E;border-top:1px solid rgba(255,255,255,0.07);'>Platform network effects + ecosystem lock-in</td>
         </tr>
       </tbody>
     </table>

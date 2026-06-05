@@ -32,9 +32,11 @@ COMPANY_MAP = {c["name"]: c for c in COMPANIES}
 
 with st.sidebar:
     st.markdown(
-        "<div style='font-size:16px;font-weight:700;color:#FF6A00;padding:12px 0 4px;'>"
-        "🏭 INGECART</div>"
-        "<hr style='border-color:#FF6A00;margin:4px 0 12px;'/>",
+        "<div style='text-align:center;padding:16px 0 12px;border-bottom:1px solid rgba(255,106,0,0.2);margin-bottom:14px;'>"
+        "<div style='font-size:10px;font-weight:700;color:#FF6A00;letter-spacing:4px;text-transform:uppercase;margin-bottom:6px;'>◆ ING_DIGHUB</div>"
+        "<div style='font-family:Poppins,sans-serif;font-size:18px;font-weight:800;color:#EDEFF2;letter-spacing:-0.5px;'>INGECART</div>"
+        "<div style='font-size:10px;color:#8898AA;margin-top:3px;letter-spacing:0.5px;'>Industrial Intelligence Platform</div>"
+        "</div>",
         unsafe_allow_html=True,
     )
     st.markdown("**🏢 Active Company**")
@@ -117,8 +119,11 @@ with col_left:
         showlegend=False, height=320,
         margin=dict(l=0, r=0, t=10, b=80),
         xaxis_title="", yaxis_title="OEE (%)",
-        plot_bgcolor="white",
-        paper_bgcolor="white",
+        plot_bgcolor="rgba(26,33,43,0.6)",
+        paper_bgcolor="rgba(0,0,0,0)",
+        font=dict(color="#EDEFF2"),
+        xaxis=dict(gridcolor="rgba(255,255,255,0.06)"),
+        yaxis=dict(gridcolor="rgba(255,255,255,0.06)"),
     )
     fig.update_xaxes(tickangle=-30, tickfont=dict(size=11))
     st.plotly_chart(fig, use_container_width=True)
@@ -133,7 +138,8 @@ with col_right:
         marker_colors=["#43A047", "#FFA726", "#EF5350"],
     ))
     fig2.update_layout(height=320, margin=dict(l=0, r=0, t=10, b=10),
-                       paper_bgcolor="white", showlegend=True)
+                       paper_bgcolor="rgba(0,0,0,0)", showlegend=True,
+                       font=dict(color="#EDEFF2"))
     st.plotly_chart(fig2, use_container_width=True)
 
 # ── Health score scatter ───────────────────────────────────────────────────────
@@ -146,7 +152,10 @@ fig3 = px.scatter(
     size_max=10,
 )
 fig3.update_layout(height=300, margin=dict(l=0, r=0, t=10, b=0),
-                   plot_bgcolor="white", paper_bgcolor="white")
+                   plot_bgcolor="rgba(26,33,43,0.6)", paper_bgcolor="rgba(0,0,0,0)",
+                   font=dict(color="#EDEFF2"),
+                   xaxis=dict(gridcolor="rgba(255,255,255,0.06)"),
+                   yaxis=dict(gridcolor="rgba(255,255,255,0.06)"))
 st.plotly_chart(fig3, use_container_width=True)
 
 # ── Recent alerts ──────────────────────────────────────────────────────────────
@@ -158,13 +167,14 @@ for _, row in alerts_df.iterrows():
     chip = {"Critical": "chip-error", "Warning": "chip-warn", "Info": "chip-info"}.get(sev, "chip-info")
     st.markdown(
         f"""
-        <div style='background:#F4F5F7;border:1px solid #E2EAF3;border-radius:8px;
-                padding:10px 16px;margin-bottom:6px;display:flex;align-items:center;gap:12px;'>
+        <div style='background:rgba(15,22,35,0.85);border:1px solid rgba(255,255,255,0.07);border-radius:14px;
+                padding:12px 18px;margin-bottom:8px;display:flex;align-items:center;gap:12px;
+                backdrop-filter:blur(8px);'>
           <span class='{chip}'>{sev}</span>
-          <span style='font-size:13px;color:#1A1D24;flex:1;font-weight:500;'>{row["Description"]}</span>
-          <span style='font-size:11px;color:#7E848E;white-space:nowrap;'>{row["Machine"]} · {row["Timestamp"]}</span>
-          <span style='font-size:11px;color:#7E848E;background:#F4F5F7;border-radius:10px;
-                   padding:2px 8px;'>{row["Agent"]}</span>
+          <span style='font-size:13px;color:#EDEFF2;flex:1;font-weight:400;'>{row["Description"]}</span>
+          <span style='font-size:11px;color:#8898AA;white-space:nowrap;'>{row["Machine"]} · {row["Timestamp"]}</span>
+          <span style='font-size:10px;color:#4D7CFF;background:rgba(11,59,255,0.1);border:1px solid rgba(11,59,255,0.2);
+                   border-radius:6px;padding:3px 10px;font-weight:600;'>{row["Agent"]}</span>
         </div>
         """,
         unsafe_allow_html=True,

@@ -2,6 +2,20 @@ version: "3.9"
 
 services:
 
+  # ── Nginx Proxy ─────────────────────────────────────────────────────────────
+  nginx_proxy:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    container_name: dep_nginx_proxy
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    restart: unless-stopped
+    networks:
+      - default
+
   # ── FastAPI Backend ──────────────────────────────────────────────────────────
   backend:
     build:

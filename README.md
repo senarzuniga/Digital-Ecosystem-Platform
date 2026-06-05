@@ -34,6 +34,26 @@ streamlit run app.py
 
 Ensure that you have all the necessary dependencies installed, including `asyncio-mqtt`, which is required for certain asynchronous operations within the platform.
 
+### Persistent public URL for ING_SYNC
+
+To keep the Machine Connectivity public link stable, run:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\scripts\start_ing_sync_public_stack.ps1
+```
+
+Default public URL:
+
+`https://ing-sync-dep.loca.lt`
+
+You can override the subdomain:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\scripts\start_ing_sync_public_stack.ps1 -Subdomain my-custom-subdomain
+```
+
+This script ensures backend (8000) and public Streamlit panel (8502) are running, then auto-reconnects localtunnel if the tunnel drops.
+
 ---
 
 ## Architecture

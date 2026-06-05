@@ -25,9 +25,11 @@ COMPANY_MAP = {c["name"]: c for c in COMPANIES}
 # ── Sidebar ────────────────────────────────────────────────────────────────────
 with st.sidebar:
     st.markdown(
-        "<div style='font-size:16px;font-weight:700;color:#FF6A00;padding:12px 0 4px;'>"
-        "🏭 INGECART</div>"
-        "<hr style='border-color:#FF6A00;margin:4px 0 12px;'/>",
+        "<div style='text-align:center;padding:16px 0 12px;border-bottom:1px solid rgba(255,106,0,0.2);margin-bottom:14px;'>"
+        "<div style='font-size:10px;font-weight:700;color:#FF6A00;letter-spacing:4px;text-transform:uppercase;margin-bottom:6px;'>◆ ING_DIGHUB</div>"
+        "<div style='font-family:Poppins,sans-serif;font-size:18px;font-weight:800;color:#EDEFF2;letter-spacing:-0.5px;'>INGECART</div>"
+        "<div style='font-size:10px;color:#8898AA;margin-top:3px;letter-spacing:0.5px;'>Industrial Intelligence Platform</div>"
+        "</div>",
         unsafe_allow_html=True,
     )
     st.markdown("**🏢 Active Company**")
@@ -271,14 +273,14 @@ col1, col2 = st.columns(2)
 with col1:
     st.markdown(
         """
-                <div style='background:#F4F5F7;border:1px solid #FFD54F;border-radius:10px;padding:16px 18px;'>
-                    <div style='font-size:14px;font-weight:700;color:#1A1D24;margin-bottom:8px;'>
+                <div style='background:rgba(15,22,35,0.85);border:1px solid rgba(255,184,77,0.25);border-radius:14px;padding:16px 18px;backdrop-filter:blur(8px);'>
+                    <div style='font-size:14px;font-weight:700;color:#FFB84D;margin-bottom:8px;font-family:Poppins,sans-serif;'>
                         📊 Today (IIoT Market Standard)
                     </div>
-                    <div style='font-size:13px;color:#7E848E;'>
+                    <div style='font-size:13px;color:#8898AA;'>
                         Data → Dashboard → Human → Decision → Action
                     </div>
-          <ul style='font-size:13px;color:#5D4037;margin-top:8px;'>
+          <ul style='font-size:13px;color:#8898AA;margin-top:8px;'>
             <li>Manual interpretation required</li>
             <li>Slow response to events</li>
             <li>Limited to available operator bandwidth</li>
@@ -292,14 +294,14 @@ with col1:
 with col2:
     st.markdown(
         """
-        <div style='background:#E8F5E9;border:1px solid #A5D6A7;border-radius:10px;padding:16px 18px;'>
-          <div style='font-size:14px;font-weight:700;color:#2E7D32;margin-bottom:8px;'>
+        <div style='background:rgba(15,22,35,0.85);border:1px solid rgba(34,197,94,0.25);border-radius:14px;padding:16px 18px;backdrop-filter:blur(8px);'>
+          <div style='font-size:14px;font-weight:700;color:#22C55E;margin-bottom:8px;font-family:Poppins,sans-serif;'>
             🤖 Tomorrow (AI-Native Ecosystem)
           </div>
-          <div style='font-size:13px;color:#1B5E20;'>
+          <div style='font-size:13px;color:#8898AA;'>
             Data → AI Agents → Decision → Action (+ optional human approval)
           </div>
-          <ul style='font-size:13px;color:#1B5E20;margin-top:8px;'>
+          <ul style='font-size:13px;color:#8898AA;margin-top:8px;'>
             <li>Autonomous 24/7 operation</li>
             <li>Millisecond response to anomalies</li>
             <li>Unlimited scale across fleet</li>

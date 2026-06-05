@@ -16,7 +16,7 @@ sys.path.insert(0, str(ROOT))
 
 from utils.styles import PLATFORM_CSS, MATURITY_LEVELS, render_company_header
 from utils.agent_taxonomy import AGENTS, get_active_agents, get_locked_agents
-from utils.data_generator import _seed
+from utils.data_generator import _seed, generate_alerts, generate_machines
 
 st.set_page_config(page_title="AI Agent Center · DEP", page_icon="🤖", layout="wide")
 st.markdown(PLATFORM_CSS, unsafe_allow_html=True)
@@ -29,9 +29,11 @@ COMPANY_MAP = {c["name"]: c for c in COMPANIES}
 # ── Sidebar ────────────────────────────────────────────────────────────────────
 with st.sidebar:
     st.markdown(
-        "<div style='font-size:16px;font-weight:700;color:#FF6A00;padding:12px 0 4px;'>"
-        "🏭 INGECART</div>"
-        "<hr style='border-color:#FF6A00;margin:4px 0 12px;'/>",
+        "<div style='text-align:center;padding:16px 0 12px;border-bottom:1px solid rgba(255,106,0,0.2);margin-bottom:14px;'>"
+        "<div style='font-size:10px;font-weight:700;color:#FF6A00;letter-spacing:4px;text-transform:uppercase;margin-bottom:6px;'>◆ ING_DIGHUB</div>"
+        "<div style='font-family:Poppins,sans-serif;font-size:18px;font-weight:800;color:#EDEFF2;letter-spacing:-0.5px;'>INGECART</div>"
+        "<div style='font-size:10px;color:#8898AA;margin-top:3px;letter-spacing:0.5px;'>Industrial Intelligence Platform</div>"
+        "</div>",
         unsafe_allow_html=True,
     )
     st.markdown("**🏢 Active Company**")
@@ -75,6 +77,113 @@ lvl = company["maturity_level"]
 active_agents = get_active_agents(lvl)
 locked_agents = get_locked_agents(lvl)
 
+machines_df = generate_machines(company)
+alerts_df = generate_alerts(company, n=max(8, min(24, company.get("machines", 12) // 4)))
+
+warning_count = int((machines_df["Status"] == "Warning").sum())
+offline_count = int((machines_df["Status"] == "Offline").sum())
+online_count = int((machines_df["Status"] == "Online").sum())
+fleet_size = max(1, len(machines_df))
+warning_rate = (warning_count + offline_count) / fleet_size
+avg_oee = float(machines_df["OEE (%)"].mean())
+high_temp_count = int((machines_df["Temp (°C)"] >= 80).sum())
+high_vibration_count = int((machines_df["Vibration (mm/s)"] >= 3.5).sum())
+low_health_count = int((machines_df["Health Score"] < 60).sum())
+pm_due_14 = int((machines_df["Next PM (days)"] <= 14).sum())
+
+critical_alerts = int((alerts_df["Severity"] == "Critical").sum()) if not alerts_df.empty else 0
+warning_alerts = int((alerts_df["Severity"] == "Warning").sum()) if not alerts_df.empty else 0
+
+
+def _build_agent_recommendations(agent_id: str) -> tuple[str, list[str]]:
+    if agent_id == "operational":
+        analysis = (
+            f"Fleet stability is mixed: {online_count}/{fleet_size} online, "
+            f"{warning_count} warning, {offline_count} offline. "
+            f"Detected {high_temp_count} high-temperature and {high_vibration_count} high-vibration machines."
+        )
+        recs = [
+            "Prioritize root-cause checks on offline and warning machines by production criticality.",
+            "Apply temporary safe-setpoint correction on thermal/vibration hotspots and monitor for 2 shifts.",
+            "Enable stricter anomaly thresholds during peak load windows to reduce MTTR.",
+        ]
+        return analysis, recs
+
+    if agent_id == "maintenance":
+        analysis = (
+            f"Maintenance risk is elevated on {low_health_count} low-health assets; "
+            f"{pm_due_14} machine(s) require PM in <=14 days with {critical_alerts} critical alert(s)."
+        )
+        recs = [
+            "Lock PM slots this week for low-health assets and sequence by downtime impact.",
+            "Pre-order critical spare parts for assets with PM <=14 days.",
+            "Trigger post-maintenance verification to close the learning loop in failure prediction.",
+        ]
+        return analysis, recs
+
+    if agent_id == "engineering":
+        hotspot = "bearing" if (alerts_df["Description"].str.contains("bearing", case=False).any()) else "thermal drift"
+        analysis = (
+            f"Field feedback indicates repeatable {hotspot} patterns and {warning_alerts + critical_alerts} "
+            "relevant alert events suitable for design-loop feedback."
+        )
+        recs = [
+            "Cluster recurring failure modes by machine type and open one design improvement ticket per cluster.",
+            "Prioritize redesign validation on the top 20% highest-downtime assets.",
+            "Track design change impact through MTBF and warranty-claim deltas.",
+        ]
+        return analysis, recs
+
+    if agent_id == "optimization":
+        analysis = (
+            f"Current avg OEE is {avg_oee:.1f}% with a fleet instability rate of {warning_rate * 100:.1f}%. "
+            "Optimization potential is available through parameter harmonization and load balancing."
+        )
+        recs = [
+            "Run two what-if recipes for cycle-time vs. quality trade-off and promote the better profile.",
+            "Shift non-critical loads to lower-tariff windows to reduce energy intensity.",
+            "Use bottleneck-based dispatching when warning/offline ratio exceeds baseline.",
+        ]
+        return analysis, recs
+
+    if agent_id == "commercial":
+        analysis = (
+            f"Commercial signals are favorable: {company['active_contracts']} active contracts and "
+            f"{warning_count + offline_count} assets with upgrade/retrofit context."
+        )
+        recs = [
+            "Trigger upgrade qualification on assets with repeated warning events.",
+            "Create contract-renewal bundles combining predictive maintenance and optimization add-ons.",
+            "Prioritize high-value accounts with aging installed base for modernization offers.",
+        ]
+        return analysis, recs
+
+    if agent_id == "customer_success":
+        analysis = (
+            f"Customer success load is moderate with {warning_alerts} warning and {critical_alerts} critical alerts. "
+            "Operators need guided, explainable next-best actions."
+        )
+        recs = [
+            "Publish an operator playbook for top recurring issues with plain-language steps.",
+            "Auto-generate proactive guidance for lines with repeated alerts in the last 24h.",
+            "Escalate unresolved advisory threads to a human specialist after SLA threshold.",
+        ]
+        return analysis, recs
+
+    if agent_id == "management":
+        analysis = (
+            f"Executive risk posture: warning/offline footprint at {warning_rate * 100:.1f}% and "
+            f"{critical_alerts} critical alert(s), with OEE baseline at {avg_oee:.1f}%."
+        )
+        recs = [
+            "Approve short-term reliability sprint focused on top-risk assets.",
+            "Rebalance CAPEX toward predictive and optimization modules with fastest payback.",
+            "Review cross-site risk monthly with a board-ready scorecard and mitigation owner.",
+        ]
+        return analysis, recs
+
+    return "No analysis available for this agent.", ["No recommendations available."]
+
 c1, c2, c3 = st.columns(3)
 c1.metric("Total Agents",  len(AGENTS))
 c2.metric("Active",        len(active_agents))
@@ -108,6 +217,20 @@ for idx, agent in enumerate(active_agents):
                 f"Available from Maturity L{agent['maturity_min']}</div>",
                 unsafe_allow_html=True,
             )
+
+# ── Agent analysis and recommendations ────────────────────────────────────────
+st.markdown("<hr class='dep-divider'/>", unsafe_allow_html=True)
+st.markdown('<div class="dep-section-header">Agent Analysis & Recommendations</div>', unsafe_allow_html=True)
+st.caption("Operational analysis generated from live fleet signals (status, telemetry proxies, alerts).")
+
+for agent in active_agents:
+    analysis, recs = _build_agent_recommendations(agent["id"])
+    with st.container():
+        st.markdown(f"### {agent['icon']} {agent['name']}")
+        st.markdown(f"**Analysis:** {analysis}")
+        st.markdown("**Recommendations:**")
+        for rec in recs:
+            st.markdown(f"- {rec}")
 
 # ── Locked agents ──────────────────────────────────────────────────────────────
 if locked_agents:

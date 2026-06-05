@@ -32,9 +32,11 @@ COMPANY_MAP = {c["name"]: c for c in COMPANIES}
 # ── Sidebar ────────────────────────────────────────────────────────────────────
 with st.sidebar:
     st.markdown(
-        "<div style='font-size:16px;font-weight:700;color:#FF6A00;padding:12px 0 4px;'>"
-        "🏭 INGECART</div>"
-        "<hr style='border-color:#FF6A00;margin:4px 0 12px;'/>",
+        "<div style='text-align:center;padding:16px 0 12px;border-bottom:1px solid rgba(255,106,0,0.2);margin-bottom:14px;'>"
+        "<div style='font-size:10px;font-weight:700;color:#FF6A00;letter-spacing:4px;text-transform:uppercase;margin-bottom:6px;'>◆ ING_DIGHUB</div>"
+        "<div style='font-family:Poppins,sans-serif;font-size:18px;font-weight:800;color:#EDEFF2;letter-spacing:-0.5px;'>INGECART</div>"
+        "<div style='font-size:10px;color:#8898AA;margin-top:3px;letter-spacing:0.5px;'>Industrial Intelligence Platform</div>"
+        "</div>",
         unsafe_allow_html=True,
     )
     st.markdown("**🏢 Active Company**")
@@ -127,16 +129,16 @@ with tab1:
         }.get(row["Priority"], "chip-info")
         st.markdown(
             f"""
-                        <div style='background:#F4F5F7;border:1px solid #E2EAF3;border-radius:10px;
-                                                padding:14px 18px;margin-bottom:10px;'>
+                        <div style='background:rgba(15,22,35,0.85);border:1px solid rgba(255,255,255,0.07);border-radius:14px;
+                                                padding:14px 18px;margin-bottom:10px;backdrop-filter:blur(8px);'>
                             <div style='display:flex;align-items:center;gap:12px;margin-bottom:6px;'>
                                 <span class='{priority_chip}'>{row["Priority"]}</span>
-                                <span style='font-size:15px;font-weight:700;color:#1A1D24;'>{row["Offer"]}</span>
-                                <span style='margin-left:auto;font-size:14px;font-weight:700;color:#2E7D32;'>
-                                    ${row["Est. Value ($)":,.0f}
+                                <span style='font-size:15px;font-weight:700;color:#EDEFF2;font-family:Poppins,sans-serif;'>{row["Offer"]}</span>
+                                <span style='margin-left:auto;font-size:14px;font-weight:700;color:#22C55E;'>
+                                    ${row["Est. Value ($)"]:,.0f}
                                 </span>
                             </div>
-                            <div style='font-size:12px;color:#7E848E;display:flex;gap:16px;'>
+                            <div style='font-size:12px;color:#8898AA;display:flex;gap:16px;'>
                                 <span>📦 {row["Category"]}</span>
                 <span>🔩 {row["Machine"]}</span>
                 <span>⚡ Trigger: <em>{row["Trigger"]}</em></span>
@@ -157,7 +159,7 @@ with tab1:
     fig.update_layout(
         height=260, showlegend=False,
         margin=dict(l=0, r=0, t=10, b=0),
-        plot_bgcolor="white", paper_bgcolor="white",
+        plot_bgcolor="rgba(26,33,43,0.6)", paper_bgcolor="rgba(0,0,0,0)",
         yaxis_title="Pipeline Value ($)",
     )
     st.plotly_chart(fig, use_container_width=True)
@@ -195,7 +197,7 @@ with tab2:
         type_rev = orders_df.groupby("Type")["Revenue ($)"].sum().reset_index()
         fig2 = px.pie(type_rev, names="Type", values="Revenue ($)", hole=0.4,
                       title="Revenue by Service Type")
-        fig2.update_layout(height=280, margin=dict(l=0, r=0, t=30, b=0), paper_bgcolor="white")
+        fig2.update_layout(height=280, margin=dict(l=0, r=0, t=30, b=0), paper_bgcolor="rgba(0,0,0,0)")
         st.plotly_chart(fig2, use_container_width=True)
     with col_r:
         status_rev = orders_df.groupby("Status")["Revenue ($)"].sum().reset_index()
@@ -203,7 +205,7 @@ with tab2:
                       color_discrete_sequence=["#43A047", "#1E88E5", "#FFA726", "#AB47BC"])
         fig3.update_layout(height=280, showlegend=False,
                            margin=dict(l=0, r=0, t=30, b=0),
-                           plot_bgcolor="white", paper_bgcolor="white",
+                           plot_bgcolor="rgba(26,33,43,0.6)", paper_bgcolor="rgba(0,0,0,0)",
                            title="Revenue by Status")
         st.plotly_chart(fig3, use_container_width=True)
 
@@ -223,7 +225,7 @@ with tab3:
             title="Fleet Age vs OEE (bubble = health score)",
         )
         fig4.update_layout(height=300, margin=dict(l=0, r=0, t=30, b=0),
-                           plot_bgcolor="white", paper_bgcolor="white")
+                           plot_bgcolor="rgba(26,33,43,0.6)", paper_bgcolor="rgba(0,0,0,0)")
         st.plotly_chart(fig4, use_container_width=True)
 
     with col_r:
@@ -236,7 +238,7 @@ with tab3:
         fig5 = px.pie(age_counts, names="Age Group", values="Count", hole=0.45,
                       color_discrete_sequence=["#43A047", "#FFA726", "#EF5350"],
                       title="Fleet Age Distribution")
-        fig5.update_layout(height=300, margin=dict(l=0, r=0, t=30, b=0), paper_bgcolor="white")
+        fig5.update_layout(height=300, margin=dict(l=0, r=0, t=30, b=0), paper_bgcolor="rgba(0,0,0,0)")
         st.plotly_chart(fig5, use_container_width=True)
 
     # Machines nearing next PM
@@ -304,12 +306,12 @@ with tab4:
         with cols[idx % 2]:
             st.markdown(
                 f"""
-                                <div style='border-left:4px solid {color};background:#F4F5F7;border-radius:8px;
-                                                        padding:14px 16px;margin-bottom:12px;border:1px solid #E2EAF3;'>
-                                    <div style='font-size:14px;font-weight:700;color:#1A1D24;margin-bottom:6px;'>
+                                <div style='border-left:4px solid {color};background:rgba(15,22,35,0.85);border-radius:14px;
+                                                        padding:14px 16px;margin-bottom:12px;border:1px solid rgba(255,255,255,0.07);backdrop-filter:blur(8px);'>
+                                    <div style='font-size:14px;font-weight:700;color:#EDEFF2;margin-bottom:6px;font-family:Poppins,sans-serif;'>
                     {icon}  {title}
                   </div>
-                  <div style='font-size:13px;color:#4A5568;'>{body}</div>
+                  <div style='font-size:13px;color:#8898AA;line-height:1.6;'>{body}</div>
                 </div>
                 """,
                 unsafe_allow_html=True,

@@ -35,9 +35,11 @@ COMPANY_MAP = {c["name"]: c for c in COMPANIES}
 
 with st.sidebar:
     st.markdown(
-        "<div style='font-size:16px;font-weight:700;color:#FF6A00;padding:12px 0 4px;'>"
-        "🏭 INGECART</div>"
-        "<hr style='border-color:#FF6A00;margin:4px 0 12px;'/>",
+        "<div style='text-align:center;padding:16px 0 12px;border-bottom:1px solid rgba(255,106,0,0.2);margin-bottom:14px;'>"
+        "<div style='font-size:10px;font-weight:700;color:#FF6A00;letter-spacing:4px;text-transform:uppercase;margin-bottom:6px;'>◆ ING_DIGHUB</div>"
+        "<div style='font-family:Poppins,sans-serif;font-size:18px;font-weight:800;color:#EDEFF2;letter-spacing:-0.5px;'>INGECART</div>"
+        "<div style='font-size:10px;color:#8898AA;margin-top:3px;letter-spacing:0.5px;'>Industrial Intelligence Platform</div>"
+        "</div>",
         unsafe_allow_html=True,
     )
     st.markdown("**🏢 Active Company**")
@@ -240,7 +242,7 @@ if machine_ids:
         fig.add_hline(y=80, line_dash="dash", line_color="#EF5350",
                       annotation_text="Critical threshold")
         fig.update_layout(height=280, margin=dict(l=0, r=0, t=10, b=0),
-                          plot_bgcolor="white", paper_bgcolor="white",
+                          plot_bgcolor="rgba(26,33,43,0.6)", paper_bgcolor="rgba(0,0,0,0)",
                           yaxis_title="°C")
         st.plotly_chart(fig, use_container_width=True)
 
@@ -254,7 +256,7 @@ if machine_ids:
         fig2.add_hline(y=3.5, line_dash="dash", line_color="#FFA726",
                        annotation_text="Warning threshold")
         fig2.update_layout(height=280, margin=dict(l=0, r=0, t=10, b=0),
-                           plot_bgcolor="white", paper_bgcolor="white",
+                           plot_bgcolor="rgba(26,33,43,0.6)", paper_bgcolor="rgba(0,0,0,0)",
                            yaxis_title="mm/s")
         st.plotly_chart(fig2, use_container_width=True)
 
@@ -265,7 +267,7 @@ if machine_ids:
             line=dict(color="#2E7D32", width=2), name="Power (kW)",
         ))
         fig3.update_layout(height=280, margin=dict(l=0, r=0, t=10, b=0),
-                           plot_bgcolor="white", paper_bgcolor="white",
+                           plot_bgcolor="rgba(26,33,43,0.6)", paper_bgcolor="rgba(0,0,0,0)",
                            yaxis_title="kW")
         st.plotly_chart(fig3, use_container_width=True)
 else:
