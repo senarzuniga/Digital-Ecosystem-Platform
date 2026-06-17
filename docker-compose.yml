@@ -26,13 +26,14 @@ services:
       - "8000:8000"
     environment:
       - DATABASE_URL=postgresql+asyncpg://${POSTGRES_USER:-dep}:${POSTGRES_PASSWORD:-dep_secret}@postgres:5432/${POSTGRES_DB:-dep_platform}
-      - SECRET_KEY=${SECRET_KEY:-CHANGE-ME-IN-PRODUCTION}
       - CORS_ORIGINS=http://localhost:8501,http://frontend:8501
       - EVENT_BUS_BACKEND=${EVENT_BUS_BACKEND:-memory}
       - REDIS_URL=redis://redis:6379
       - MQTT_BROKER_HOST=${MQTT_BROKER_HOST:-mqtt}
       - MQTT_ENABLED=${MQTT_ENABLED:-false}
       - DEBUG=${DEBUG:-false}
+    secrets:
+      - secret_key
     depends_on:
       postgres:
         condition: service_healthy
@@ -102,3 +103,7 @@ services:
 
 volumes:
   postgres_data:
+
+secrets:
+  secret_key:
+    file: ./secrets/secret_key
