@@ -135,3 +135,11 @@ Default bootstrapped external client:
 | L3 | Predictive | ML failure prediction, recommended actions |
 | L4 | Semi-Autonomous | Agents execute pre-approved actions |
 | L5 | Fully Autonomous | Self-managing AI ecosystem |
+
+---
+
+## Connector Documentation
+
+- [MQTT Connector](docs/connectors/mqtt_connector.md)
+- [OPC UA Connector](docs/connectors/opcua_connector.md)
+- [REST Connector](docs/connectors/rest_connector.md)
