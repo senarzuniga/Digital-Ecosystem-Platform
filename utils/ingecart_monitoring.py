@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-from collections import Counter
 from datetime import datetime, timedelta, timezone
 import hashlib
 import math
@@ -99,6 +98,102 @@ ROLE_PANELS: Dict[str, Dict[str, Any]] = {
             "Compare SLA coverage against downtime exposure by site.",
             "Prioritize offers that reduce recurring corrective spend.",
         ],
+    },
+}
+
+MODULE_CATALOG: List[Dict[str, str]] = [
+    {"id": "executive_twin", "label": "Executive Twin"},
+    {"id": "live_signals", "label": "Live Signals"},
+    {"id": "maintenance_service", "label": "Maintenance & Service"},
+    {"id": "fault_resolution", "label": "Fault Resolution"},
+    {"id": "ai_copilot", "label": "AI Copilot"},
+    {"id": "role_cockpit", "label": "Role Cockpit"},
+    {"id": "reports_offers", "label": "Reports & Offers"},
+    {"id": "evidence_gaps", "label": "Evidence & Gaps"},
+]
+
+ROLE_MODULE_ACCESS: Dict[str, List[str]] = {
+    "Ingecart": [item["id"] for item in MODULE_CATALOG],
+    "Board Cliente": ["executive_twin", "ai_copilot", "role_cockpit", "reports_offers", "evidence_gaps"],
+    "Plant manager Cliente": ["executive_twin", "live_signals", "maintenance_service", "fault_resolution", "ai_copilot", "role_cockpit", "reports_offers"],
+    "Production manager Cliente": ["executive_twin", "live_signals", "maintenance_service", "fault_resolution", "ai_copilot", "role_cockpit", "reports_offers"],
+    "Maintenance Cliente": ["live_signals", "maintenance_service", "fault_resolution", "ai_copilot", "role_cockpit", "reports_offers", "evidence_gaps"],
+    "Operario cliente": ["live_signals", "fault_resolution", "role_cockpit"],
+    "Compras Cliente": ["maintenance_service", "ai_copilot", "role_cockpit", "reports_offers", "evidence_gaps"],
+}
+
+RACI_BY_MODULE: Dict[str, Dict[str, str]] = {
+    "Executive Twin": {
+        "Ingecart": "A/R",
+        "Board Cliente": "A",
+        "Plant manager Cliente": "R",
+        "Production manager Cliente": "C",
+        "Maintenance Cliente": "I",
+        "Operario cliente": "I",
+        "Compras Cliente": "C",
+    },
+    "Live Signals": {
+        "Ingecart": "A/R",
+        "Board Cliente": "I",
+        "Plant manager Cliente": "R",
+        "Production manager Cliente": "R",
+        "Maintenance Cliente": "C",
+        "Operario cliente": "R",
+        "Compras Cliente": "I",
+    },
+    "Maintenance & Service": {
+        "Ingecart": "A/R",
+        "Board Cliente": "I",
+        "Plant manager Cliente": "C",
+        "Production manager Cliente": "C",
+        "Maintenance Cliente": "R",
+        "Operario cliente": "I",
+        "Compras Cliente": "C",
+    },
+    "Fault Resolution": {
+        "Ingecart": "A/R",
+        "Board Cliente": "I",
+        "Plant manager Cliente": "A",
+        "Production manager Cliente": "C",
+        "Maintenance Cliente": "R",
+        "Operario cliente": "R",
+        "Compras Cliente": "I",
+    },
+    "AI Copilot": {
+        "Ingecart": "A/R",
+        "Board Cliente": "C",
+        "Plant manager Cliente": "C",
+        "Production manager Cliente": "C",
+        "Maintenance Cliente": "C",
+        "Operario cliente": "I",
+        "Compras Cliente": "C",
+    },
+    "Role Cockpit": {
+        "Ingecart": "A/R",
+        "Board Cliente": "A",
+        "Plant manager Cliente": "R",
+        "Production manager Cliente": "R",
+        "Maintenance Cliente": "R",
+        "Operario cliente": "R",
+        "Compras Cliente": "R",
+    },
+    "Reports & Offers": {
+        "Ingecart": "A/R",
+        "Board Cliente": "C",
+        "Plant manager Cliente": "C",
+        "Production manager Cliente": "C",
+        "Maintenance Cliente": "C",
+        "Operario cliente": "I",
+        "Compras Cliente": "R",
+    },
+    "Evidence & Gaps": {
+        "Ingecart": "A/R",
+        "Board Cliente": "C",
+        "Plant manager Cliente": "I",
+        "Production manager Cliente": "I",
+        "Maintenance Cliente": "C",
+        "Operario cliente": "I",
+        "Compras Cliente": "I",
     },
 }
 
@@ -936,6 +1031,39 @@ def _build_interventions(latest_df: pd.DataFrame) -> List[Dict[str, Any]]:
     return jobs
 
 
+def _build_fault_resolution_queue(latest_df: pd.DataFrame) -> List[Dict[str, Any]]:
+    queue: List[Dict[str, Any]] = []
+    top_df = latest_df.sort_values(["state", "predicted_failure_risk_pct", "cost_of_downtime_eur_h"], ascending=[True, False, False]).head(12)
+    for _, row in top_df.iterrows():
+        if row["state"] == "critical":
+            sla = "Immediate (< 30 min)"
+            action = "Switch to safe mode, isolate subsystem, execute corrective checklist and remote support bridge."
+        elif row["state"] == "warning":
+            sla = "Priority (< 4 h)"
+            action = "Validate vibration/temperature trend, inspect drives and schedule predictive intervention before shift close."
+        elif row["state"] == "attention":
+            sla = "Validation (< 24 h)"
+            action = "Confirm hypothesis with site evidence, then decide preventive or corrective path."
+        else:
+            sla = "Standard (< 24 h)"
+            action = "Keep observing trend and complete preventive routine."
+        queue.append(
+            {
+                "incident_id": f"INC-{_stable_seed(row['equipment_id']) % 100000:05d}",
+                "site_name": row["site_name"],
+                "equipment_name": row["equipment_name"],
+                "state": row["state"],
+                "risk_pct": row["predicted_failure_risk_pct"],
+                "alarm_count": int(row["alarm_count"]),
+                "downtime_cost_eur_h": row["cost_of_downtime_eur_h"],
+                "suggested_sla": sla,
+                "recommended_action": action,
+                "owner_role": "Maintenance Cliente" if row["state"] != "attention" else "Ingecart",
+            }
+        )
+    return queue
+
+
 def _build_report_markdown(
     scope_label: str,
     role: str,
@@ -987,6 +1115,41 @@ def _build_report_markdown(
     lines.append("### Still Needed")
     for item in gap_analysis["pending"][:8]:
         lines.append(f"- {item['scope']}: {item['finding']}")
+    return "\n".join(lines)
+
+
+def _build_offer_markdown(offer: Dict[str, Any], snapshot: Dict[str, Any]) -> str:
+    lines = [
+        f"# {offer['reference']}",
+        "",
+        f"## Client Scope",
+        f"- Portfolio scope: {offer['scope']}",
+        f"- Request type: {offer['request_kind']}",
+        f"- Generated by role: {snapshot['role']}",
+        "",
+        "## Executive Offer Summary",
+        f"- CAPEX: EUR {offer['capex_total_eur']:.0f}",
+        f"- Monthly OPEX: EUR {offer['monthly_total_eur']:.0f}",
+        f"- SLA response: {offer['response_sla_hours']} h",
+        f"- Confidence: {offer['confidence']:.2f}",
+        "",
+        "## Technical Scope",
+    ]
+    for row in offer["lines"]:
+        lines.append(
+            f"- {row['equipment_name']}: {row['line_concept']} · risk {row['risk_basis_pct']}% · downtime EUR {row['downtime_cost_eur_h']:.0f}/h · coverage {row['coverage']}."
+        )
+    lines.extend(
+        [
+            "",
+            "## Economic Notes",
+            "- Offer baseline is generated from monitored risk, downtime exposure and selected SLA coverage.",
+            "- Final commercial issue should be validated with customer engineering interfaces and installed-base confirmation.",
+            "",
+            "## Ingecart Offer Notes",
+            offer["notes"],
+        ]
+    )
     return "\n".join(lines)
 
 
@@ -1083,6 +1246,7 @@ def generate_monitoring_snapshot(
     recommendations = _build_recommendations(latest_df, portfolio)
     hidden_issues = _build_hidden_issues(latest_df)
     interventions = _build_interventions(latest_df)
+    fault_resolution = _build_fault_resolution_queue(latest_df)
     contracts = _build_contracts(latest_df)
     gap_analysis = _build_gap_analysis(selected_sites)
     role_briefing = _build_role_briefing(role, latest_df, portfolio)
@@ -1123,10 +1287,14 @@ def generate_monitoring_snapshot(
         ],
         "alerts": alerts,
         "interventions": interventions,
+        "fault_resolution": fault_resolution,
         "contracts": contracts,
         "recommendations": recommendations,
         "hidden_issues": hidden_issues,
         "role_briefing": role_briefing,
+        "role_module_access": ROLE_MODULE_ACCESS.get(role, ROLE_MODULE_ACCESS["Ingecart"]),
+        "raci_matrix": raci_matrix_rows(),
+        "module_catalog": MODULE_CATALOG,
         "report_markdown": report_markdown,
         "formula_library": FORMULA_LIBRARY,
         "gap_analysis": gap_analysis,
@@ -1193,7 +1361,7 @@ def generate_instant_offer(
             }
         )
     reference = f"ING-{snapshot['scope']}-{request_kind}-{int(base_capex) % 100000:05d}"
-    return {
+    offer = {
         "reference": reference.upper(),
         "scope": scope_name,
         "request_kind": request_kind,
@@ -1207,6 +1375,8 @@ def generate_instant_offer(
             "Non-Calgary sites still require tag list, maintenance history and exact installed-base validation for a final commercial proposal."
         ),
     }
+    offer["offer_markdown"] = _build_offer_markdown(offer, snapshot)
+    return offer
 
 
 def build_request_alert(
@@ -1232,6 +1402,10 @@ def build_request_alert(
         "equipment_name": equipment_name,
         "details": details,
     }
+
+
+def raci_matrix_rows() -> List[Dict[str, str]]:
+    return [{"module": module, **roles} for module, roles in RACI_BY_MODULE.items()]
 
 
 def serialize_snapshot(snapshot: Dict[str, Any]) -> str:
