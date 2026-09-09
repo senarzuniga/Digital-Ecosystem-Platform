@@ -76,5 +76,70 @@
     "installed_base_age_avg_years": 4.8,
     "active_contracts": 58,
     "logo_color": "#00838F"
+  },
+  {
+    "id": "cascades_calgary",
+    "name": "Cascades Calgary",
+    "country": "Canada",
+    "sector": "Corrugated Cardboard Manufacturing",
+    "machines": 10,
+    "employees": 620,
+    "maturity_level": 4,
+    "annual_revenue_m": 210,
+    "installed_base_age_avg_years": 6.5,
+    "active_contracts": 9,
+    "logo_color": "#FF6A00"
+  },
+  {
+    "id": "ip_waterloo",
+    "name": "IP Waterloo",
+    "country": "Canada",
+    "sector": "Corrugated Cardboard Manufacturing",
+    "machines": 8,
+    "employees": 540,
+    "maturity_level": 3,
+    "annual_revenue_m": 180,
+    "installed_base_age_avg_years": 5.2,
+    "active_contracts": 8,
+    "logo_color": "#0B3BFF"
+  },
+  {
+    "id": "cascades_piscataway",
+    "name": "Cascades Piscataway",
+    "country": "United States",
+    "sector": "Corrugated Cardboard Manufacturing",
+    "machines": 6,
+    "employees": 430,
+    "maturity_level": 3,
+    "annual_revenue_m": 145,
+    "installed_base_age_avg_years": 5.8,
+    "active_contracts": 6,
+    "logo_color": "#1A9A72"
+  },
+  {
+    "id": "cartonajes_font",
+    "name": "Cartonajes Font",
+    "country": "Spain",
+    "sector": "Corrugated Cardboard Manufacturing",
+    "machines": 6,
+    "employees": 370,
+    "maturity_level": 4,
+    "annual_revenue_m": 110,
+    "installed_base_age_avg_years": 4.1,
+    "active_contracts": 7,
+    "logo_color": "#E65100"
+  },
+  {
+    "id": "mastercorr_covington",
+    "name": "MasterCorr, LLC Covington",
+    "country": "United States",
+    "sector": "Corrugated Cardboard Manufacturing",
+    "machines": 4,
+    "employees": 290,
+    "maturity_level": 3,
+    "annual_revenue_m": 95,
+    "installed_base_age_avg_years": 6.9,
+    "active_contracts": 5,
+    "logo_color": "#6A1B9A"
   }
 ]
