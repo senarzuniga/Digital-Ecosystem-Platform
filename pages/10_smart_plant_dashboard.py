@@ -85,12 +85,20 @@ def _inject_local_styles() -> None:
             text-transform: uppercase;
             letter-spacing: 0.08em;
         }
-        section[data-testid="stSidebar"] div[data-baseweb="select"] > div {
+        section[data-testid="stSidebar"] div[data-baseweb="select"] > div,
+        section[data-testid="stSidebar"] div[data-baseweb="select"] [role="combobox"],
+        section[data-testid="stSidebar"] div[data-baseweb="select"] input {
             background: #FF6A00 !important;
             border-color: #FF6A00 !important;
-        }
-        section[data-testid="stSidebar"] div[data-baseweb="select"] * {
             color: #EDEFF2 !important;
+            -webkit-text-fill-color: #EDEFF2 !important;
+        }
+        section[data-testid="stSidebar"] div[data-baseweb="select"] span,
+        section[data-testid="stSidebar"] div[data-baseweb="select"] div,
+        section[data-testid="stSidebar"] div[data-baseweb="select"] p,
+        section[data-testid="stSidebar"] div[data-baseweb="select"] svg {
+            color: #EDEFF2 !important;
+            fill: #EDEFF2 !important;
         }
         </style>
         """,
