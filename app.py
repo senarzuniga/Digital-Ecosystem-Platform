@@ -100,6 +100,7 @@ with st.sidebar:
     st.page_link("pages/05_Maturity_Model.py",      label="📈  Maturity Model")
     st.page_link("pages/06_Ecosystem_Blueprint.py", label="🗺️  Ecosystem Blueprint")
     st.page_link("pages/07_After_Sales_Engine.py",  label="💰  After-Sales Engine")
+    st.page_link("pages/10_smart_plant_dashboard.py", label="🏭  Smart Plant Dashboard")
 
     st.markdown("<div style='border-top:1px solid rgba(255,106,0,0.12);margin:20px 0;'></div>", unsafe_allow_html=True)
     st.markdown(

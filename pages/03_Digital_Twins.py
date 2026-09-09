@@ -63,6 +63,7 @@ with st.sidebar:
     st.page_link("pages/05_Maturity_Model.py",       label="📈  Maturity Model")
     st.page_link("pages/06_Ecosystem_Blueprint.py",  label="🗺️  Blueprint")
     st.page_link("pages/07_After_Sales_Engine.py",   label="💰  After-Sales")
+    st.page_link("pages/10_smart_plant_dashboard.py",  label="🏭  Smart Plant Dashboard")
 
 # ── Page header ────────────────────────────────────────────────────────────────
 st.markdown(
