@@ -17,6 +17,7 @@ sys.path.insert(0, str(ROOT))
 
 from utils.ingecart_monitoring import (
     FORMULA_LIBRARY,
+    MODULE_CATALOG,
     ROLE_PANELS,
     SOURCE_REGISTER,
     build_request_alert,
@@ -183,6 +184,13 @@ def _ensure_state() -> None:
     st.session_state.setdefault("smart_spare_matches", [])
 
 
+def _snapshot_module_catalog(snapshot: dict) -> list[dict]:
+    module_catalog = snapshot.get("module_catalog")
+    if isinstance(module_catalog, list) and module_catalog:
+        return module_catalog
+    return MODULE_CATALOG
+
+
 CLIENT_FOLDER_ROOT = ROOT / "data" / "client_folders"
 CHANGE_LOG_PATH = ROOT / "data" / "smart_plant_change_log.jsonl"
 
@@ -272,9 +280,10 @@ def main() -> None:
     st.markdown('<div class="dep-section-header">Executive Twin</div>', unsafe_allow_html=True)
     _render_site_cards(snapshot["site_summaries"])
 
-    module_labels = {item["id"]: item["label"] for item in snapshot["module_catalog"]}
-    allowed_modules = snapshot["role_module_access"]
-    ordered_modules = [item["id"] for item in snapshot["module_catalog"] if item["id"] in allowed_modules]
+    module_catalog = _snapshot_module_catalog(snapshot)
+    allowed_modules = snapshot.get("role_module_access", [item["id"] for item in module_catalog])
+    module_labels = {item["id"]: item["label"] for item in module_catalog}
+    ordered_modules = [item["id"] for item in module_catalog if item["id"] in allowed_modules]
     tabs = st.tabs([module_labels[module_id] for module_id in ordered_modules])
     tab_map = {module_id: tabs[idx] for idx, module_id in enumerate(ordered_modules)}
 
