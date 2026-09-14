@@ -487,7 +487,7 @@ TYPE_LIBRARY: Dict[str, Dict[str, Any]] = {
         "optional_signals": ["wheel_following_error", "tread_wear_index", "charge_cycles_total", "wifi_link_quality", "safety_event_log_count"],
         "service_contract": "Ingetrans Smart Production Continuity",
         "technical_baseline": "AI-FACTORY-v2/knowledge/corrugated_equipment/ingetrans_smart_technical_baseline_R2_2026-09-14.json",
-        "drive_basis": "INGECART IGC-DW20 (0.90 m/s, 2,000 kg/wheel) or IGC-DW100 (0.43 m/s, 10,000 kg/wheel); 48 V DC LiFePO4; laser navigation +/-20 mm with station reference +/-5 mm",
+        "drive_basis": "4 x INGECART IGC-DW100 only (0.43 m/s, 10,000 kg/wheel); 48 V DC LiFePO4; laser navigation +/-20 mm with station reference +/-5 mm",
     },
     "rfid": {
         "label": "RFID Reel Management",
