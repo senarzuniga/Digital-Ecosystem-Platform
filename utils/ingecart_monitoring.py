@@ -25,14 +25,20 @@ GENERAL_SIGNALS = [
 ]
 
 FORMULA_LIBRARY: List[Dict[str, str]] = [
-    {"name": "OEE", "expression": "availability_pct * performance_pct * quality_pct / 10000", "target": ">= 85%"},
-    {"name": "Availability", "expression": "runtime / planned_time", "target": ">= 92%"},
-    {"name": "Performance", "expression": "actual_output / ideal_output", "target": ">= 90%"},
-    {"name": "Quality", "expression": "good_output / total_output", "target": ">= 98%"},
+    {"name": "OEE (machine)", "expression": "A_machine * P * Q, with A_machine = (T_planned - T_down_unplanned - T_changeover) / T_planned", "target": ">= 85%"},
+    {"name": "OEE (line)", "expression": "A_line * P * Q, with A_line = T_producing / T_planned (starved and blocked count as losses)", "target": ">= 75%"},
+    {"name": "Availability", "expression": "(T_planned - T_down_unplanned - T_changeover) / T_planned", "target": ">= 92%"},
+    {"name": "Performance", "expression": "sum(delta_units_by_recipe * ideal_cycle_time_by_recipe) / T_producing", "target": ">= 90%"},
+    {"name": "Quality", "expression": "(good_units / total_units) * (good_pallets / total_pallets)", "target": ">= 98%"},
+    {"name": "TEEP", "expression": "OEE_line * T_planned / T_calendar", "target": "trend"},
+    {"name": "Cycle time P95", "expression": "95th percentile of valid robot cycles excluding wait_for_bundle and wait_for_pallet", "target": "<= 1.15 x ideal"},
     {"name": "LPI", "expression": "(queue_pct + starvation_penalty + route_conflicts) / 3", "target": "<= 40"},
     {"name": "Queue Pressure", "expression": "queue_pct * criticality_factor", "target": "<= 55"},
     {"name": "Predictive Risk", "expression": "weighted(temp, vibration, alarms, drift, maintenance_due)", "target": "<= 35%"},
+    {"name": "MTBF", "expression": "T_producing / unplanned_fault_events (report only with >= 5 events)", "target": ">= 120 h"},
     {"name": "MTTR", "expression": "repair_minutes / failure_events", "target": "<= 45 min"},
+    {"name": "Energy intensity", "expression": "delta_energy_kwh / (good_units * boxes_per_unit) * 1000", "target": "trend, kWh per 1000 boxes"},
+    {"name": "Data completeness", "expression": "samples_received / samples_expected from heartbeat; OEE flagged data_gap below 98%", "target": ">= 99%"},
 ]
 
 ROLE_PANELS: Dict[str, Dict[str, Any]] = {
@@ -487,15 +493,22 @@ TYPE_LIBRARY: Dict[str, Dict[str, Any]] = {
         "queue_base": 28.0,
         "quality_base": 99.0,
         "must_signals": [
-            "bundle_rate",
+            "machine_state_iso22400",
+            "stop_reason_code",
+            "bundles_placed_total",
+            "bundles_rejected_total",
+            "pallets_completed_total",
             "robot_cycle_time_s",
-            "gripper_servo_load_pct",
-            "interlayer_status",
+            "wait_for_bundle_s",
+            "wait_for_pallet_s",
+            "gripper_servo_current_a",
             "four_side_squaring_ok_pct",
-            "pallet_stability_score",
+            "sheet_magazine_level_pct",
+            "energy_total_kwh",
         ],
-        "optional_signals": ["trajectory_stress_index", "robot_joint_temperature", "pattern_changeovers"],
+        "optional_signals": ["joint_torque_pct_max", "robot_joint_temperature", "squaring_drift_mm", "pattern_changeovers", "air_pressure_bar"],
         "service_contract": "Heavy Duty Palletizing SLA",
+        "data_capture_spec": "docs/hd_palletizer_data_capture_spec_v1.md",
     },
     "palletizer_pp": {
         "label": "Plug & Play Palletizer",
@@ -656,6 +669,7 @@ def _equipment(
         "must_signals": profile["must_signals"] + GENERAL_SIGNALS,
         "optional_signals": profile["optional_signals"],
         "service_contract": profile["service_contract"],
+        "data_capture_spec": profile.get("data_capture_spec"),
     }
     payload.update(overrides)
     return payload
